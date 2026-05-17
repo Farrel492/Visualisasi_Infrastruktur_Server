@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Visualisasi Server — LEPKOM</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT VARIABLES & RESET
+═══════════════════════════════════════════════ */
+:root {
+  --bg-deep:       #060d1a;
+  --bg-card:       #0d1b2e;
+  --bg-card-light: #f4f7fc;
+  --border-dim:    rgba(255,255,255,0.07);
+  --border-glow:   rgba(56,189,248,0.35);
+  --accent-cyan:   #38bdf8;
+  --accent-green:  #22c55e;
+  --accent-amber:  #f59e0b;
+  --accent-purple: #a78bfa;
+  --accent-coral:  #f87171;
+  --text-primary:  #e2eaf6;
+  --text-secondary:#94a3b8;
+  --text-dim:      #475569;
+  --font-mono:     'Share Tech Mono', monospace;
+  --font-body:     'Exo 2', sans-serif;
+  --transition:    0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════
+   LOADING SCREEN
+═══════════════════════════════════════════════ */
+#loader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #020810;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 24px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.loader-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-cyan);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: fadeIn 0.5s ease;
+}
+
+.loader-bar-wrap {
+  width: 260px; height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px; overflow: hidden;
+}
+.loader-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  border-radius: 2px;
+  width: 0%;
+  animation: loadProgress 1.8s cubic-bezier(0.4,0,0.2,1) forwards;
+  box-shadow: 0 0 12px var(--accent-cyan);
+}
+@keyframes loadProgress { to { width: 100%; } }
+
+.loader-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  animation: typeText 1.8s steps(30) forwards;
+  white-space: nowrap; overflow: hidden;
+  width: 0;
+}
+@keyframes typeText { to { width: 260px; } }
+
+.loader-grid {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 6px;
+}
+.loader-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent-cyan);
+  opacity: 0;
+  animation: dotPop 0.3s ease forwards;
+}
+.loader-dot:nth-child(1){animation-delay:0.1s} .loader-dot:nth-child(2){animation-delay:0.2s}
+.loader-dot:nth-child(3){animation-delay:0.3s} .loader-dot:nth-child(4){animation-delay:0.4s}
+.loader-dot:nth-child(5){animation-delay:0.5s} .loader-dot:nth-child(6){animation-delay:0.6s}
+.loader-dot:nth-child(7){animation-delay:0.7s} .loader-dot:nth-child(8){animation-delay:0.8s}
+.loader-dot:nth-child(9){animation-delay:0.9s} .loader-dot:nth-child(10){animation-delay:1.0s}
+@keyframes dotPop {
+  0%   { opacity:0; transform:scale(0); }
+  60%  { opacity:1; transform:scale(1.3); }
+  100% { opacity:0.3; transform:scale(1); }
+}
+
+/* ═══════════════════════════════════════════════
+   BACKGROUND GRID EFFECT
+═══════════════════════════════════════════════ */
+body::before {
+  content:'';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   MAIN LAYOUT
+═══════════════════════════════════════════════ */
+.main-wrap {
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  opacity: 0;
+  animation: pageReveal 0.8s ease 2s forwards;
+}
+@keyframes pageReveal { to { opacity: 1; } }
+
+/* ═══════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+.site-header {
+  text-align: center;
+  margin-bottom: 48px;
+  animation: slideDown 0.7s ease 2.1s both;
+}
+@keyframes slideDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+
+.site-header .badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent-cyan);
+  border: 1px solid rgba(56,189,248,0.3);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  background: rgba(56,189,248,0.05);
+}
+.site-header h1 {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #e2eaf6 30%, var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.site-header p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION TITLES
+═══════════════════════════════════════════════ */
+.section-heading {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-heading::after {
+  content:''; flex:1; height:1px;
+  background: linear-gradient(90deg, rgba(56,189,248,0.3), transparent);
+}
+
+/* ═══════════════════════════════════════════════
+   LED ANIMATIONS (enhanced)
+═══════════════════════════════════════════════ */
+@keyframes ledGreen {
+  0%,100% { opacity:1; box-shadow: 0 0 6px #22c55e, 0 0 12px rgba(34,197,94,0.4); }
+  50%      { opacity:0.3; box-shadow: 0 0 2px #22c55e; }
+}
+@keyframes ledAmber {
+  0%,100% { opacity:1; box-shadow: 0 0 6px #f59e0b, 0 0 12px rgba(245,158,11,0.4); }
+  50%      { opacity:0.2; box-shadow: 0 0 2px #f59e0b; }
+}
+@keyframes ledBlue {
+  0%,100% { opacity:1; box-shadow: 0 0 6px #38bdf8, 0 0 12px rgba(56,189,248,0.4); }
+  50%      { opacity:0.3; box-shadow: 0 0 2px #38bdf8; }
+}
+@keyframes ledRed {
+  0%,100% { opacity:1; box-shadow: 0 0 6px #f87171, 0 0 12px rgba(248,113,113,0.4); }
+  50%      { opacity:0.15; box-shadow: 0 0 2px #f87171; }
+}
+.led-g { background:#22c55e; animation: ledGreen 1.8s ease-in-out infinite; }
+.led-a { background:#f59e0b; animation: ledAmber 0.65s ease-in-out infinite; }
+.led-b { background:#38bdf8; animation: ledBlue 2.2s ease-in-out infinite; }
+.led-r { background:#f87171; animation: ledRed 0.9s ease-in-out infinite; }
+.led { display:inline-block; width:8px; height:8px; border-radius:50%; }
+.led-sm { width:6px; height:6px; }
+.led-row { display:flex; gap:5px; align-items:center; }
+
+/* ═══════════════════════════════════════════════
+   CARD BASE
+═══════════════════════════════════════════════ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 12px;
+  transition: all var(--transition);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(56,189,248,0.04), transparent 60%);
+  opacity:0; transition: opacity var(--transition);
+  pointer-events:none;
+}
+.card:hover { border-color: var(--border-glow); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(56,189,248,0.12), 0 0 0 1px rgba(56,189,248,0.1); }
+.card:hover::before { opacity:1; }
+
+/* ═══════════════════════════════════════════════
+   PART 1 — SERVER TYPES GRID
+═══════════════════════════════════════════════ */
+.types-section { margin-bottom: 60px; animation: fadeUp 0.6s ease 2.3s both; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 14px;
+}
+
+.type-cat {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.type-cat:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 24px rgba(56,189,248,0.08);
+  transform: translateY(-2px);
+}
+
+.cat-header {
+  padding: 12px 14px 10px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border-dim);
+}
+.cat-icon { font-size: 18px; }
+.cat-title { font-size: 13px; font-weight: 600; }
+
+.cat-items { padding: 10px; display:flex; flex-direction:column; gap:7px; }
+
+.type-item {
+  border-radius: 8px;
+  padding: 9px 11px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  position: relative; overflow: hidden;
+}
+.type-item::after {
+  content:'';
+  position:absolute; left:0; top:0; bottom:0; width:3px;
+  border-radius:3px 0 0 3px;
+  opacity:0; transition: opacity var(--transition);
+}
+.type-item:hover { transform: translateX(4px); }
+.type-item:hover::after { opacity:1; }
+
+.item-name { font-size: 12px; font-weight: 600; display:flex; align-items:center; gap:6px; }
+.item-desc { font-size: 10px; margin-top:3px; opacity:0.7; padding-left:14px; }
+
+/* Category color themes */
+.cat-net .cat-header  { background: rgba(56,189,248,0.08); }
+.cat-net .cat-title   { color: var(--accent-cyan); }
+.cat-net .type-item   { background: rgba(56,189,248,0.05); }
+.cat-net .type-item:hover { background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.2); }
+.cat-net .type-item::after { background: var(--accent-cyan); }
+.cat-net .item-name   { color: #bae6fd; }
+.cat-net .item-desc   { color: var(--accent-cyan); }
+
+.cat-web .cat-header  { background: rgba(34,197,94,0.08); }
+.cat-web .cat-title   { color: #4ade80; }
+.cat-web .type-item   { background: rgba(34,197,94,0.05); }
+.cat-web .type-item:hover { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); }
+.cat-web .type-item::after { background: var(--accent-green); }
+.cat-web .item-name   { color: #bbf7d0; }
+.cat-web .item-desc   { color: #4ade80; }
+
+.cat-data .cat-header { background: rgba(167,139,250,0.08); }
+.cat-data .cat-title  { color: var(--accent-purple); }
+.cat-data .type-item  { background: rgba(167,139,250,0.05); }
+.cat-data .type-item:hover { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.2); }
+.cat-data .type-item::after { background: var(--accent-purple); }
+.cat-data .item-name  { color: #ddd6fe; }
+.cat-data .item-desc  { color: var(--accent-purple); }
+
+.cat-sec .cat-header  { background: rgba(248,113,113,0.08); }
+.cat-sec .cat-title   { color: var(--accent-coral); }
+.cat-sec .type-item   { background: rgba(248,113,113,0.05); }
+.cat-sec .type-item:hover { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.2); }
+.cat-sec .type-item::after { background: var(--accent-coral); }
+.cat-sec .item-name   { color: #fecaca; }
+.cat-sec .item-desc   { color: var(--accent-coral); }
+
+.cat-virt .cat-header { background: rgba(245,158,11,0.08); }
+.cat-virt .cat-title  { color: var(--accent-amber); }
+.cat-virt .type-item  { background: rgba(245,158,11,0.05); }
+.cat-virt .type-item:hover { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); }
+.cat-virt .type-item::after { background: var(--accent-amber); }
+.cat-virt .item-name  { color: #fde68a; }
+.cat-virt .item-desc  { color: var(--accent-amber); }
+
+.cat-spec .cat-header { background: rgba(74,222,128,0.08); }
+.cat-spec .cat-title  { color: #4ade80; }
+.cat-spec .type-item  { background: rgba(74,222,128,0.05); }
+.cat-spec .type-item:hover { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.2); }
+.cat-spec .type-item::after { background: #4ade80; }
+.cat-spec .item-name  { color: #bbf7d0; }
+.cat-spec .item-desc  { color: #4ade80; }
+
+/* Highlight box */
+.highlight-box {
+  margin-top: 14px;
+  border: 1px dashed rgba(56,189,248,0.25);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(56,189,248,0.03);
+}
+.highlight-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.highlight-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.highlight-item {
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+}
+.highlight-item:hover { transform: translateY(-3px); }
+.hl-cyan   { background: rgba(56,189,248,0.08);  border-color: rgba(56,189,248,0.2);  }
+.hl-purple { background: rgba(167,139,250,0.08); border-color: rgba(167,139,250,0.2); }
+.hl-amber  { background: rgba(245,158,11,0.08);  border-color: rgba(245,158,11,0.2);  }
+.hl-cyan:hover   { background: rgba(56,189,248,0.15);  box-shadow: 0 0 20px rgba(56,189,248,0.15);  }
+.hl-purple:hover { background: rgba(167,139,250,0.15); box-shadow: 0 0 20px rgba(167,139,250,0.15); }
+.hl-amber:hover  { background: rgba(245,158,11,0.15);  box-shadow: 0 0 20px rgba(245,158,11,0.15);  }
+.hl-cyan   .hl-name { color: var(--accent-cyan);   }
+.hl-purple .hl-name { color: var(--accent-purple); }
+.hl-amber  .hl-name { color: var(--accent-amber);  }
+.hl-name { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+.hl-desc { font-size: 10px; color: var(--text-secondary); }
+
+/* ═══════════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════════ */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.2), transparent);
+  margin: 48px 0;
+}
+
+/* ═══════════════════════════════════════════════
+   PART 2 — RACK SERVER
+═══════════════════════════════════════════════ */
+.rack-section { margin-bottom: 60px; animation: fadeUp 0.6s ease 2.5s both; }
+
+.rack-layout { display: flex; gap: 20px; align-items: flex-start; }
+
+.rack-frame {
+  flex-shrink: 0;
+  width: 280px;
+  background: #0a0f1a;
+  border: 2px solid #2a3a4a;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.3);
+}
+.rack-top-cap {
+  height: 14px;
+  background: linear-gradient(180deg, #1e2d3d, #0f1b28);
+  border-bottom: 1px solid #2a3a4a;
+  display: flex; align-items: center; justify-content: center;
+}
+.rack-top-cap span { font-family: var(--font-mono); font-size: 8px; color: #3a5a7a; letter-spacing: 3px; }
+.rack-bottom-cap { height: 14px; background: linear-gradient(0deg, #1e2d3d, #0f1b28); border-top: 1px solid #2a3a4a; }
+
+.rack-unit-row {
+  display: flex;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.rack-u-label {
+  width: 24px; flex-shrink:0;
+  font-family: var(--font-mono); font-size: 7px;
+  color: #2a4a6a;
+  display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid rgba(255,255,255,0.04);
+}
+.rack-device {
+  flex: 1;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  display: flex; align-items: center; gap: 8px;
+  overflow: hidden;
+}
+.rack-device::before {
+  content:''; position:absolute; inset:0;
+  opacity:0; transition: opacity var(--transition);
+}
+.rack-device:hover { filter: brightness(1.15); }
+.rack-device:hover::before { opacity:1; }
+.rack-device:active { transform: scale(0.98); }
+
+.dev-name { font-size: 10px; font-weight: 600; flex:1; }
+.dev-sub  { font-size: 8px;  opacity:0.6; }
+.dev-leds { display:flex; gap:3px; margin-left:auto; }
+
+/* Device color styles */
+.dev-firewall  { background: linear-gradient(90deg, rgba(248,113,113,0.12), rgba(248,113,113,0.04)); border-left: 2px solid #f87171; }
+.dev-firewall  .dev-name { color:#fca5a5; }
+.dev-switch    { background: linear-gradient(90deg, rgba(56,189,248,0.12), rgba(56,189,248,0.04)); border-left: 2px solid #38bdf8; }
+.dev-switch    .dev-name { color:#7dd3fc; }
+.dev-router    { background: linear-gradient(90deg, rgba(34,197,94,0.12), rgba(34,197,94,0.04)); border-left: 2px solid #22c55e; }
+.dev-router    .dev-name { color:#86efac; }
+.dev-patch     { background: linear-gradient(90deg, rgba(100,116,139,0.2), rgba(100,116,139,0.04)); border-left: 2px solid #475569; }
+.dev-patch     .dev-name { color:#94a3b8; }
+.dev-cable-mgmt{ background: rgba(30,40,55,0.8); border-left: 2px solid #334155; }
+.dev-cable-mgmt .dev-name { color:#64748b; font-size:9px; }
+.dev-server    { background: linear-gradient(90deg, rgba(167,139,250,0.12), rgba(167,139,250,0.04)); border-left: 2px solid #a78bfa; }
+.dev-server    .dev-name { color:#c4b5fd; }
+.dev-kvm       { background: linear-gradient(90deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04)); border-left: 2px solid #f59e0b; }
+.dev-kvm       .dev-name { color:#fcd34d; }
+.dev-nas       { background: linear-gradient(90deg, rgba(74,222,128,0.12), rgba(74,222,128,0.04)); border-left: 2px solid #4ade80; }
+.dev-nas       .dev-name { color:#86efac; }
+.dev-blank     { background: rgba(15,22,35,0.6); border-left: 2px solid #1e293b; }
+.dev-blank     .dev-name { color:#1e293b; font-size:8px; font-style:italic; }
+.dev-ups       { background: linear-gradient(90deg, rgba(239,68,68,0.12), rgba(239,68,68,0.04)); border-left: 2px solid #ef4444; }
+.dev-ups       .dev-name { color:#fca5a5; }
+.dev-pdu       { background: linear-gradient(90deg, rgba(100,116,139,0.15), rgba(100,116,139,0.04)); border-left: 2px solid #64748b; }
+.dev-pdu       .dev-name { color:#94a3b8; }
+.dev-spare     { background: rgba(10,15,26,0.5); border-left: 2px dashed #1e293b; }
+.dev-spare     .dev-name { color:#1e293b; font-size:8px; }
+
+/* 2U height */
+.rack-unit-2u { display: flex; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.rack-u-label-2u {
+  width: 24px; flex-shrink:0;
+  font-family: var(--font-mono); font-size: 7px;
+  color: #2a4a6a;
+  display: flex; flex-direction:column; align-items: center; justify-content: center;
+  border-right: 1px solid rgba(255,255,255,0.04); gap:2px;
+}
+.rack-device-2u {
+  flex:1; padding: 8px;
+  cursor: pointer; transition: all var(--transition);
+  display: flex; flex-direction:column; justify-content:center; gap:3px;
+  position:relative; overflow:hidden;
+}
+.rack-device-2u:hover { filter: brightness(1.15); }
+.rack-device-2u .dev-sub { font-size: 8px; }
+
+/* Port dots for patch panel */
+.port-dots { display:flex; gap:2px; flex-wrap:wrap; margin-top:3px; }
+.port-dot { width:4px; height:5px; border-radius:1px; background:#334155; }
+.port-dot.used-g { background:#22c55e; box-shadow:0 0 3px rgba(34,197,94,0.5); }
+.port-dot.used-b { background:#38bdf8; box-shadow:0 0 3px rgba(56,189,248,0.5); }
+.port-dot.used-a { background:#f59e0b; box-shadow:0 0 3px rgba(245,158,11,0.5); }
+
+/* Battery bar */
+.batt-bar-wrap { width:60px; height:5px; background: rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; margin-top:2px; }
+.batt-bar { height:100%; background: linear-gradient(90deg,#22c55e,#4ade80); border-radius:3px; width:80%; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
+
+/* Fan spin in rack */
+@keyframes fanSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+.fan-icon { display:inline-block; animation: fanSpin 1.5s linear infinite; font-size:10px; }
+
+/* Rack callout labels */
+.rack-labels { flex:1; display:flex; flex-direction:column; justify-content:space-between; padding: 14px 0; }
+.rack-label-item {
+  display:flex; align-items:center; gap:8px;
+  font-size: 11px; color: var(--text-secondary);
+  transition: color var(--transition);
+}
+.rack-label-item:hover { color: var(--accent-cyan); }
+.label-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.label-line { flex:1; height:1px; background: linear-gradient(90deg, rgba(56,189,248,0.15), transparent); }
+
+/* ═══════════════════════════════════════════════
+   PART 3 — SERVER INTERNALS
+═══════════════════════════════════════════════ */
+.internals-section { animation: fadeUp 0.6s ease 2.7s both; }
+
+.chassis-wrap {
+  background: #080e18;
+  border: 2px solid #1e3a4a;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 0 60px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.3);
+  position: relative;
+}
+.chassis-wrap::before {
+  content:'⚙️ SERVER CHASSIS — 2U RACK MOUNT (COVER REMOVED)';
+  position:absolute; top:-11px; left:20px;
+  font-family: var(--font-mono); font-size:9px;
+  color:#38bdf8; letter-spacing:2px;
+  background: #080e18; padding: 2px 10px;
+  border: 1px solid rgba(56,189,248,0.3); border-radius:20px;
+}
+
+.motherboard {
+  background: #0a1f0a;
+  border: 1px solid #1a4a1a;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+}
+.mb-label {
+  font-family: var(--font-mono); font-size:9px;
+  color:#22c55e; letter-spacing:2px; margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
+.mb-label::after { content:''; flex:1; height:1px; background: linear-gradient(90deg,rgba(34,197,94,0.3),transparent); }
+
+.int-section-title {
+  font-family: var(--font-mono); font-size:9px;
+  color:#64748b; letter-spacing:2px;
+  text-transform:uppercase; margin-bottom:8px;
+}
+
+/* Fans */
+.fans-row { display:flex; gap:8px; margin-bottom:14px; justify-content:center; }
+.server-fan {
+  width:44px; height:44px; border-radius:50%;
+  background: radial-gradient(circle, #1a2535, #0d1520);
+  border: 2px solid #1e3a5a;
+  display:flex; align-items:center; justify-content:center;
+  animation: fanSpin 1.8s linear infinite;
+  cursor:pointer; transition: border-color var(--transition);
+  box-shadow: 0 0 8px rgba(0,0,0,0.5), inset 0 0 8px rgba(0,0,0,0.5);
+  font-size:20px;
+}
+.server-fan:hover { border-color: var(--accent-cyan); box-shadow: 0 0 12px rgba(56,189,248,0.2); }
+.server-fan:nth-child(2) { animation-duration: 2.1s; }
+.server-fan:nth-child(3) { animation-duration: 1.6s; }
+.server-fan:nth-child(4) { animation-duration: 2.4s; }
+.server-fan:nth-child(5) { animation-duration: 1.9s; }
+.server-fan:nth-child(6) { animation-duration: 2.2s; }
+
+/* CPU */
+.cpu-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+.cpu-socket {
+  background: #0d2a0d; border: 1px solid #2a5a2a;
+  border-radius:8px; padding:10px; text-align:center;
+  cursor:pointer; transition:all var(--transition);
+}
+.cpu-socket:hover { border-color:#22c55e; box-shadow: 0 0 16px rgba(34,197,94,0.15); transform:translateY(-2px); }
+.heatsink {
+  width:60px; height:14px; margin:0 auto 6px;
+  background: repeating-linear-gradient(90deg, #666 0px, #666 2px, #3a3a3a 2px, #3a3a3a 5px);
+  border-radius:2px; border:1px solid #555;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+.cpu-chip {
+  width:58px; height:58px; margin:0 auto 8px;
+  background: linear-gradient(135deg,#2a2a2a,#4a4a4a,#2a2a2a);
+  border-radius:4px; border:2px solid #555;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6), inset 0 1px rgba(255,255,255,0.05);
+}
+.cpu-chip::before {
+  content:''; position:absolute; inset:5px;
+  border:1px solid rgba(255,255,255,0.1); border-radius:2px;
+}
+.cpu-chip-text { font-family:var(--font-mono); font-size:8px; color:#888; font-weight:700; }
+.cpu-name { font-size:11px; font-weight:600; color:#81C784; }
+.cpu-spec { font-size:9px; color:#4CAF50; margin-top:2px; }
+.cpu-temp { font-size:9px; color:var(--accent-amber); margin-top:3px; }
+
+/* RAM */
+.ram-row { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:14px; }
+.ram-stick {
+  width:28px; height:72px; border-radius:3px; border:1px solid;
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:flex-end; padding-bottom:4px;
+  cursor:pointer; transition:all var(--transition); position:relative;
+  overflow:hidden;
+}
+.ram-stick.filled {
+  background: linear-gradient(180deg,#1a3a6a,#0d2545);
+  border-color:#4a90d9;
+}
+.ram-stick.filled:hover {
+  border-color:var(--accent-cyan);
+  box-shadow: 0 0 12px rgba(56,189,248,0.3);
+  transform:translateY(-4px);
+}
+.ram-stick.empty {
+  background:#0a0f1a; border-color:#1e293b; border-style:dashed;
+}
+.ram-chip { width:18px; height:7px; background:#2a5a9a; border-radius:1px; margin-bottom:2px; }
+.ram-chip-alt { width:18px; height:7px; background:#1a4a8a; border-radius:1px; margin-bottom:2px; }
+.ram-label {
+  font-family:var(--font-mono); font-size:7px; color:#5ba3f5;
+  writing-mode:vertical-rl; transform:rotate(180deg);
+  position:absolute; top:4px;
+}
+.ram-empty-label {
+  font-family:var(--font-mono); font-size:7px; color:#1e293b;
+  writing-mode:vertical-rl; transform:rotate(180deg);
+}
+
+/* RAID */
+.raid-bar {
+  background: #1a1a00; border: 1px solid rgba(234,179,8,0.3);
+  border-radius:8px; padding:9px 12px; margin-bottom:14px;
+  display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; transition:all var(--transition);
+}
+.raid-bar:hover { border-color:var(--accent-amber); box-shadow: 0 0 16px rgba(234,179,8,0.1); transform:translateY(-1px); }
+.raid-name { font-size:11px; font-weight:600; color:#FDE047; }
+.raid-spec { font-size:9px; color:#CA8A04; margin-top:2px; }
+.raid-badge { font-family:var(--font-mono); font-size:9px; background:#422006; color:#FCD34D; padding:3px 8px; border-radius:10px; letter-spacing:1px; }
+
+/* HDD Bays */
+.hdd-row { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:6px; }
+.hdd-bay {
+  width:56px; border-radius:5px; border:1.5px solid;
+  padding:7px 5px; text-align:center;
+  cursor:pointer; transition:all var(--transition);
+}
+.hdd-bay:hover { transform:translateY(-3px); }
+.hdd-bay.sas  { background:#1a1a2e; border-color:#5352ED; }
+.hdd-bay.sas:hover  { box-shadow: 0 0 12px rgba(83,82,237,0.3); }
+.hdd-bay.ssd  { background:#1a2e1a; border-color:#22C55E; }
+.hdd-bay.ssd:hover  { box-shadow: 0 0 12px rgba(34,197,94,0.3); }
+.hdd-bay.empty-bay { background:#0a0f1a; border-color:#1e293b; border-style:dashed; }
+.hdd-icon { font-size:16px; margin-bottom:2px; }
+.hdd-type { font-size:8px; font-weight:700; }
+.hdd-size { font-size:8px; margin-top:1px; }
+.hdd-bay.sas .hdd-type { color:#8B8BE8; }
+.hdd-bay.sas .hdd-size { color:#5352ED; }
+.hdd-bay.ssd .hdd-type { color:#4ADE80; }
+.hdd-bay.ssd .hdd-size { color:#22C55E; }
+.hdd-bay.empty-bay .hdd-type,.hdd-bay.empty-bay .hdd-size { color:#1e293b; }
+.hdd-led { width:5px; height:5px; border-radius:50%; margin:4px auto 0; }
+.hdd-led.on  { background:#22C55E; animation: ledGreen 0.9s ease-in-out infinite; }
+.hdd-led.off { background:#1e293b; }
+
+/* NIC */
+.nic-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.nic-card {
+  background:#1a0d2e; border:1px solid rgba(147,51,234,0.3);
+  border-radius:7px; padding:9px 10px;
+  cursor:pointer; transition:all var(--transition);
+}
+.nic-card:hover { border-color:#9333EA; box-shadow:0 0 14px rgba(147,51,234,0.15); transform:translateY(-2px); }
+.nic-name { font-size:11px; font-weight:600; color:#C084FC; margin-bottom:2px; }
+.nic-spec { font-size:9px; color:#9333EA; }
+.nic-ports { display:flex; gap:3px; margin-top:6px; }
+.nic-port { width:13px; height:9px; border-radius:1px; transition: box-shadow var(--transition); }
+.nic-port.active { background:#22C55E; animation: ledGreen 1.5s ease-in-out infinite; }
+.nic-port.idle   { background:#1e293b; }
+
+/* PSU */
+.psu-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.psu-card {
+  background:#2a1a00; border:1px solid rgba(245,158,11,0.25);
+  border-radius:7px; padding:9px 10px;
+  cursor:pointer; transition:all var(--transition);
+}
+.psu-card:hover { border-color:var(--accent-amber); box-shadow:0 0 14px rgba(245,158,11,0.12); transform:translateY(-2px); }
+.psu-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; }
+.psu-name { font-size:11px; font-weight:600; color:#FFB74D; }
+.psu-spec { font-size:9px; color:#FF9800; }
+
+/* Cables */
+.cable-strip { display:flex; gap:5px; margin-bottom:4px; }
+.cable-seg { height:5px; border-radius:3px; flex:1; }
+.cable-note { font-size:9px; color:#334155; margin-top:2px; }
+
+/* ═══════════════════════════════════════════════
+   PART 4 — HYPERVISOR
+═══════════════════════════════════════════════ */
+.hypervisor-section { margin-bottom:60px; animation: fadeUp 0.6s ease 2.9s both; }
+
+.server-box-outer {
+  background: #f4f7fc;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 18px;
+  position:relative;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+}
+.server-box-outer::before {
+  content:'⚙️ PHYSICAL SERVER — 2U RACK MOUNT';
+  position:absolute; top:-11px; left:20px;
+  font-family:var(--font-mono); font-size:9px;
+  color:#475569; letter-spacing:2px;
+  background:#f4f7fc; padding:2px 10px;
+  border:1px solid #cbd5e1; border-radius:20px;
+}
+.int-title-light {
+  font-family:var(--font-mono); font-size:10px;
+  color:#64748b; text-transform:uppercase; letter-spacing:2px;
+  margin-bottom:8px;
+}
+
+.hw-grid-light { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+.hw-card-light {
+  border-radius:10px; padding:12px 10px; text-align:center;
+  border:1px solid; cursor:pointer; transition:all var(--transition);
+}
+.hw-card-light:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.1); }
+.hw-icon { font-size:22px; margin-bottom:5px; }
+.hw-name { font-size:12px; font-weight:600; }
+.hw-spec { font-size:10px; margin-top:3px; }
+.hw-bar-wrap { height:5px; background:rgba(0,0,0,0.08); border-radius:3px; overflow:hidden; margin-top:7px; }
+.hw-bar { height:100%; border-radius:3px; }
+.hw-cpu-l { background:#EEF2FF; border-color:#818CF8; }
+.hw-cpu-l .hw-name { color:#3730A3; } .hw-cpu-l .hw-spec { color:#6366F1; }
+.hw-cpu-l .hw-bar { background:linear-gradient(90deg,#6366F1,#818CF8); width:65%; }
+.hw-ram-l { background:#F0FDF4; border-color:#4ADE80; }
+.hw-ram-l .hw-name { color:#14532D; } .hw-ram-l .hw-spec { color:#16A34A; }
+.hw-ram-l .hw-bar { background:linear-gradient(90deg,#22C55E,#4ADE80); width:48%; }
+.hw-storage-l { background:#FFF7ED; border-color:#FB923C; }
+.hw-storage-l .hw-name { color:#7C2D12; } .hw-storage-l .hw-spec { color:#EA580C; }
+.hw-storage-l .hw-bar { background:linear-gradient(90deg,#F97316,#FB923C); width:72%; }
+
+.hypervisor-bar {
+  background:#1E1B4B; border-radius:10px; padding:12px 14px;
+  margin-bottom:14px; display:flex; align-items:center;
+  justify-content:space-between; cursor:pointer; transition:all var(--transition);
+  box-shadow: 0 4px 16px rgba(67,56,202,0.2);
+}
+.hypervisor-bar:hover { background:#2d2a5e; box-shadow:0 6px 24px rgba(67,56,202,0.3); transform:translateY(-2px); }
+.hyp-left { display:flex; align-items:center; gap:12px; }
+.hyp-icon-large { font-size:24px; }
+.hyp-title { font-size:13px; font-weight:600; color:#A5B4FC; }
+.hyp-sub { font-size:10px; color:#818CF8; margin-top:2px; }
+.hyp-badge { font-family:var(--font-mono); font-size:9px; background:#4338CA; color:#C7D2FE; padding:3px 9px; border-radius:20px; letter-spacing:1px; }
+
+.vm-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+.vm-card {
+  border-radius:10px; border:1.5px solid; padding:10px;
+  cursor:pointer; transition:all var(--transition); position:relative; overflow:hidden;
+}
+.vm-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; opacity:0; transition: opacity var(--transition); }
+.vm-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+.vm-card:hover::before { opacity:1; }
+.vm-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:5px; }
+.vm-id { font-size:12px; font-weight:700; }
+.vm-os { font-size:10px; margin-top:1px; }
+.vm-status { font-size:9px; padding:2px 6px; border-radius:10px; font-weight:600; }
+.vm-role { font-size:10px; margin-bottom:6px; }
+.vm-res { display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; }
+.vm-r-label { font-size:8px; text-align:center; opacity:0.55; }
+.vm-r-val   { font-size:10px; text-align:center; font-weight:700; }
+
+.vm-blue   { background:#EFF6FF; border-color:#93C5FD; }
+.vm-blue::before { background:linear-gradient(90deg,#3B82F6,#60A5FA); }
+.vm-blue .vm-id,.vm-blue .vm-r-val { color:#1E40AF; }
+.vm-blue .vm-os,.vm-blue .vm-role  { color:#3B82F6; }
+.vm-blue .vm-status { background:#DBEAFE; color:#1D4ED8; }
+
+.vm-green  { background:#F0FDF4; border-color:#86EFAC; }
+.vm-green::before { background:linear-gradient(90deg,#22C55E,#4ADE80); }
+.vm-green .vm-id,.vm-green .vm-r-val { color:#14532D; }
+.vm-green .vm-os,.vm-green .vm-role  { color:#16A34A; }
+.vm-green .vm-status { background:#DCFCE7; color:#15803D; }
+
+.vm-purple { background:#FAF5FF; border-color:#D8B4FE; }
+.vm-purple::before { background:linear-gradient(90deg,#9333EA,#C084FC); }
+.vm-purple .vm-id,.vm-purple .vm-r-val { color:#581C87; }
+.vm-purple .vm-os,.vm-purple .vm-role  { color:#9333EA; }
+.vm-purple .vm-status { background:#F3E8FF; color:#7E22CE; }
+
+.vm-amber  { background:#FFFBEB; border-color:#FCD34D; }
+.vm-amber::before { background:linear-gradient(90deg,#D97706,#F59E0B); }
+.vm-amber .vm-id,.vm-amber .vm-r-val { color:#78350F; }
+.vm-amber .vm-os,.vm-amber .vm-role  { color:#D97706; }
+.vm-amber .vm-status { background:#FEF3C7; color:#B45309; }
+
+.vm-coral  { background:#FFF1F2; border-color:#FDA4AF; }
+.vm-coral::before { background:linear-gradient(90deg,#E11D48,#F87171); }
+.vm-coral .vm-id,.vm-coral .vm-r-val { color:#881337; }
+.vm-coral .vm-os,.vm-coral .vm-role  { color:#E11D48; }
+.vm-coral .vm-status { background:#FFE4E6; color:#BE123C; }
+
+.vm-gray   { background:#F9FAFB; border-color:#D1D5DB; }
+.vm-gray::before { background:linear-gradient(90deg,#6B7280,#9CA3AF); }
+.vm-gray .vm-id,.vm-gray .vm-r-val { color:#374151; }
+.vm-gray .vm-os,.vm-gray .vm-role  { color:#6B7280; }
+.vm-gray .vm-status { background:#F3F4F6; color:#4B5563; }
+
+.network-bar {
+  background:#0F172A; border-radius:10px; padding:11px 14px;
+  display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; transition:all var(--transition);
+}
+.network-bar:hover { background:#162032; box-shadow:0 0 20px rgba(56,189,248,0.1); }
+.net-title-l { font-size:12px; font-weight:600; color:#7DD3FC; }
+.net-sub-l   { font-size:10px; color:#38BDF8; margin-top:1px; }
+.net-ports   { display:flex; gap:4px; }
+.net-port    { width:14px; height:9px; border-radius:1px; }
+.net-port.on  { background:#22C55E; animation: ledGreen 1.2s ease-in-out infinite; }
+.net-port.off { background:#1e293b; }
+
+/* ═══════════════════════════════════════════════
+   RESOURCE SUMMARY BAR
+═══════════════════════════════════════════════ */
+.res-summary { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+.res-card {
+  border-radius:10px; padding:12px; text-align:center;
+  border:1px solid; cursor:pointer; transition:all var(--transition);
+}
+.res-card:hover { transform:translateY(-2px); }
+.res-label { font-size:10px; font-weight:600; margin-bottom:7px; }
+.res-bar-wrap { height:7px; background:rgba(0,0,0,0.08); border-radius:4px; overflow:hidden; margin-bottom:5px; }
+.res-bar { height:100%; border-radius:4px; position:relative; overflow:hidden; }
+.res-bar::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent); animation: shimmer 2s linear infinite; }
+@keyframes shimmer { from{transform:translateX(-100%)} to{transform:translateX(100%)} }
+.res-text { font-size:10px; }
+.res-cpu    { background:#EEF2FF; border-color:#818CF8; }
+.res-cpu .res-label,.res-cpu .res-text { color:#3730A3; }
+.res-cpu .res-bar { background:linear-gradient(90deg,#6366F1,#818CF8); width:65%; }
+.res-ram    { background:#F0FDF4; border-color:#4ADE80; }
+.res-ram .res-label,.res-ram .res-text { color:#14532D; }
+.res-ram .res-bar { background:linear-gradient(90deg,#22C55E,#4ADE80); width:48%; }
+.res-storage{ background:#FFF7ED; border-color:#FB923C; }
+.res-storage .res-label,.res-storage .res-text { color:#7C2D12; }
+.res-storage .res-bar { background:linear-gradient(90deg,#F97316,#FB923C); width:72%; }
+
+/* ═══════════════════════════════════════════════
+   FOOTER NOTE
+═══════════════════════════════════════════════ */
+.footer-note {
+  text-align:center; margin-top:48px;
+  font-family:var(--font-mono); font-size:10px;
+  color:var(--text-dim); letter-spacing:2px;
+  animation: fadeUp 0.6s ease 3.1s both;
+}
+.footer-note span { color:var(--accent-cyan); }
+
+/* ═══════════════════════════════════════════════
+   GLOW PULSE on hover for whole sections
+═══════════════════════════════════════════════ */
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* Scrollbar */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:#060d1a; }
+::-webkit-scrollbar-thumb { background:#1e3a5a; border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:var(--accent-cyan); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .types-grid { grid-template-columns:1fr 1fr; }
+  .rack-layout { flex-direction:column; }
+  .rack-labels { flex-direction:row; flex-wrap:wrap; padding:0; gap:8px; }
+  .vm-grid { grid-template-columns:1fr 1fr; }
+  .highlight-grid { grid-template-columns:1fr 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .types-grid { grid-template-columns:1fr; }
+  .vm-grid { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ LOADING SCREEN ═══════ -->
+<div id="loader">
+  <div class="loader-logo">Visualisasi LEPKOM Server Lab</div>
+  <div class="loader-grid">
+    <div class="loader-dot"></div><div class="loader-dot"></div>
+    <div class="loader-dot"></div><div class="loader-dot"></div>
+    <div class="loader-dot"></div><div class="loader-dot"></div>
+    <div class="loader-dot"></div><div class="loader-dot"></div>
+    <div class="loader-dot"></div><div class="loader-dot"></div>
+  </div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-text">Initializing server visualization...</div>
+</div>
+
+<!-- ═══════ MAIN CONTENT ═══════ -->
+<div class="main-wrap">
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <div class="badge">LEPKOM · Universitas Gunadarma</div>
+    <h1>Visualisasi Infrastruktur Server</h1>
+    <p>Panduan interaktif jenis server, rak server, komponen internal, dan arsitektur hypervisor</p>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SECTION 1 — JENIS SERVER
+  ══════════════════════════════════════ -->
+  <div class="types-section">
+    <div class="section-heading">01 &nbsp; Jenis-jenis Server Berdasarkan Fungsi</div>
+
+    <div class="types-grid">
+
+      <!-- JARINGAN -->
+      <div class="type-cat cat-net">
+        <div class="cat-header">
+          <span class="cat-icon">🌐</span>
+          <span class="cat-title">Jaringan</span>
+        </div>
+        <div class="cat-items">
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang DNS Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>DNS Server</div>
+            <div class="item-desc">Terjemahkan domain ke IP</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang DHCP Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>DHCP Server</div>
+            <div class="item-desc">Distribusi IP otomatis</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Proxy Server')">
+            <div class="item-name"><span class="led led-sm led-a"></span>Proxy Server</div>
+            <div class="item-desc">Perantara akses internet</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang VPN Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>VPN Server</div>
+            <div class="item-desc">Koneksi privat &amp; aman</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEB & APLIKASI -->
+      <div class="type-cat cat-web">
+        <div class="cat-header">
+          <span class="cat-icon">💻</span>
+          <span class="cat-title">Aplikasi &amp; Web</span>
+        </div>
+        <div class="cat-items">
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Web Server seperti Apache dan Nginx')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Web Server</div>
+            <div class="item-desc">Host website &amp; aplikasi</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Application Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Application Server</div>
+            <div class="item-desc">Logika bisnis aplikasi</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Mail Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Mail Server</div>
+            <div class="item-desc">Kelola email organisasi</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang FTP Server')">
+            <div class="item-name"><span class="led led-sm led-a"></span>FTP Server</div>
+            <div class="item-desc">Transfer file via jaringan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATA & STORAGE -->
+      <div class="type-cat cat-data">
+        <div class="cat-header">
+          <span class="cat-icon">🗄️</span>
+          <span class="cat-title">Data &amp; Storage</span>
+        </div>
+        <div class="cat-items">
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Database Server MySQL dan SQL Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Database Server</div>
+            <div class="item-desc">MySQL, SQL Server</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang File Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>File Server</div>
+            <div class="item-desc">Penyimpanan file bersama</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Backup Server')">
+            <div class="item-name"><span class="led led-sm led-a"></span>Backup Server</div>
+            <div class="item-desc">Cadangan data otomatis</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan perbedaan NAS dan SAN')">
+            <div class="item-name"><span class="led led-sm led-g"></span>NAS / SAN</div>
+            <div class="item-desc">Network storage skala besar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEAMANAN -->
+      <div class="type-cat cat-sec">
+        <div class="cat-header">
+          <span class="cat-icon">🔐</span>
+          <span class="cat-title">Akses &amp; Keamanan</span>
+        </div>
+        <div class="cat-items">
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Authentication Server dan Active Directory')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Auth Server</div>
+            <div class="item-desc">Active Directory, login</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Firewall Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Firewall Server</div>
+            <div class="item-desc">Filter lalu lintas jaringan</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Print Server')">
+            <div class="item-name"><span class="led led-sm led-a"></span>Print Server</div>
+            <div class="item-desc">Berbagi printer di jaringan</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Monitoring Server seperti Zabbix atau Nagios')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Monitoring Server</div>
+            <div class="item-desc">Pantau sistem &amp; jaringan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIRTUALISASI -->
+      <div class="type-cat cat-virt">
+        <div class="cat-header">
+          <span class="cat-icon">⚙️</span>
+          <span class="cat-title">Virtualisasi</span>
+        </div>
+        <div class="cat-items">
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Virtualization Server seperti Proxmox dan VMware')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Virtualization Server</div>
+            <div class="item-desc">VMware, Proxmox, VirtualBox</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Terminal Server dan Thin Client')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Terminal Server</div>
+            <div class="item-desc">Thin client, RDS, Citrix</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Cloud Server AWS GCP Azure')">
+            <div class="item-name"><span class="led led-sm led-a"></span>Cloud Server</div>
+            <div class="item-desc">AWS, GCP, Azure</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Apa itu Container Server dan Docker?')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Container Server</div>
+            <div class="item-desc">Docker, Kubernetes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KHUSUS -->
+      <div class="type-cat cat-spec">
+        <div class="cat-header">
+          <span class="cat-icon">🎯</span>
+          <span class="cat-title">Khusus</span>
+        </div>
+        <div class="cat-items">
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Game Server dan infrastrukturnya')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Game Server</div>
+            <div class="item-desc">Sesi multiplayer online</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Streaming Server')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Streaming Server</div>
+            <div class="item-desc">Video &amp; audio on demand</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Media Server')">
+            <div class="item-name"><span class="led led-sm led-a"></span>Media Server</div>
+            <div class="item-desc">Distribusi konten media</div>
+          </div>
+          <div class="type-item" onclick="sendPrompt('Apa itu DNS Resolver dan Cache Server?')">
+            <div class="item-name"><span class="led led-sm led-g"></span>Cache Server</div>
+            <div class="item-desc">Percepat akses konten</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end types-grid -->
+
+    <!-- Highlight -->
+    <div class="highlight-box">
+      <div class="highlight-title">⭐ &nbsp; Paling relevan untuk Network Engineer</div>
+      <div class="highlight-grid">
+        <div class="highlight-item hl-cyan" onclick="sendPrompt('Jelaskan cara kerja DNS dan DHCP Server untuk infrastruktur jaringan perusahaan')">
+          <div class="hl-name">DNS + DHCP</div>
+          <div class="hl-desc">Fondasi setiap jaringan</div>
+        </div>
+        <div class="highlight-item hl-purple" onclick="sendPrompt('Jelaskan cara kerja Active Directory Authentication Server untuk Network Engineer')">
+          <div class="hl-name">Auth Server</div>
+          <div class="hl-desc">Active Directory</div>
+        </div>
+        <div class="highlight-item hl-amber" onclick="sendPrompt('Jelaskan cara kerja Virtualization Server Proxmox untuk infrastruktur jaringan')">
+          <div class="hl-name">Virtualization</div>
+          <div class="hl-desc">Proxmox / VMware</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end types-section -->
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       SECTION 2 — RAK SERVER
+  ══════════════════════════════════════ -->
+  <div class="rack-section">
+    <div class="section-heading">02 &nbsp; Rak Server — Tipikal 22U</div>
+
+    <div class="rack-layout">
+      <div class="rack-frame">
+        <div class="rack-top-cap"><span>SERVER RACK 22U</span></div>
+
+        <!-- 1U: Firewall -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">1U</div>
+          <div class="rack-device dev-firewall" onclick="sendPrompt('Jelaskan fungsi Firewall dalam rak server')">
+            <div class="dev-name">Firewall</div>
+            <div class="dev-sub">Fortinet / ASA</div>
+            <div class="dev-leds">
+              <span class="led led-sm led-g"></span>
+              <span class="led led-sm led-g"></span>
+              <span class="led led-sm led-a"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2U: Core Switch -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">2U</div>
+          <div class="rack-device dev-switch" onclick="sendPrompt('Jelaskan fungsi Core Switch dalam rak server')">
+            <div class="dev-name">Core Switch</div>
+            <div class="dev-sub">24 port GbE</div>
+            <div class="dev-leds">
+              <span class="led led-sm led-b"></span>
+              <span class="led led-sm led-g"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3U: Access Switch -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">3U</div>
+          <div class="rack-device dev-switch" onclick="sendPrompt('Apa bedanya Core Switch dan Access Switch?')">
+            <div class="dev-name">Access Switch</div>
+            <div class="dev-sub">48 port PoE</div>
+            <div class="dev-leds">
+              <span class="led led-sm led-g"></span>
+              <span class="led led-sm led-a"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4U: Router -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">4U</div>
+          <div class="rack-device dev-router" onclick="sendPrompt('Jelaskan fungsi Router dalam rak server')">
+            <div class="dev-name">Router</div>
+            <div class="dev-sub">MikroTik / Cisco ISR</div>
+            <div class="dev-leds">
+              <span class="led led-sm led-g"></span>
+              <span class="led led-sm led-a"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5U: Patch Panel -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">5U</div>
+          <div class="rack-device dev-patch" onclick="sendPrompt('Jelaskan fungsi Patch Panel dalam rak server')">
+            <div style="flex:1">
+              <div class="dev-name">Patch Panel</div>
+              <div class="port-dots">
+                <div class="port-dot used-g"></div><div class="port-dot used-b"></div>
+                <div class="port-dot used-a"></div><div class="port-dot"></div>
+                <div class="port-dot used-g"></div><div class="port-dot used-b"></div>
+                <div class="port-dot"></div><div class="port-dot used-g"></div>
+                <div class="port-dot used-a"></div><div class="port-dot"></div>
+                <div class="port-dot used-b"></div><div class="port-dot used-g"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6U: Cable Management -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">6U</div>
+          <div class="rack-device dev-cable-mgmt" onclick="sendPrompt('Apa fungsi Cable Management di rak server?')">
+            <div class="dev-name">— Cable Management —</div>
+          </div>
+        </div>
+
+        <!-- 7-8U: Server 1 (2U) -->
+        <div class="rack-unit-2u">
+          <div class="rack-u-label-2u"><span>7U</span><span>8U</span></div>
+          <div class="rack-device-2u dev-server" onclick="sendPrompt('Jelaskan fungsi server 1U dan 2U dalam data center')">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="dev-name">Server 1 — 2U</div>
+                <div class="dev-sub">Web / App Server · 32c · 128GB</div>
+              </div>
+              <div class="dev-leds">
+                <span class="led led-sm led-g"></span>
+                <span class="led led-sm led-b"></span>
+              </div>
+            </div>
+            <div style="display:flex;gap:4px;margin-top:4px">
+              <div style="width:14px;height:10px;background:rgba(167,139,250,0.3);border-radius:2px;"></div>
+              <div style="width:14px;height:10px;background:rgba(167,139,250,0.3);border-radius:2px;"></div>
+              <div style="width:14px;height:10px;background:rgba(167,139,250,0.3);border-radius:2px;"></div>
+              <div style="width:14px;height:10px;background:rgba(167,139,250,0.15);border-radius:2px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9-10U: Server 2 (2U) -->
+        <div class="rack-unit-2u">
+          <div class="rack-u-label-2u"><span>9U</span><span>10U</span></div>
+          <div class="rack-device-2u dev-server" onclick="sendPrompt('Apa itu Database Server dan bagaimana cara kerjanya?')">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="dev-name">Server 2 — 2U</div>
+                <div class="dev-sub">Database Server · 64c · 256GB</div>
+              </div>
+              <div class="dev-leds">
+                <span class="led led-sm led-g"></span>
+                <span class="led led-sm led-g"></span>
+              </div>
+            </div>
+            <div style="display:flex;gap:4px;margin-top:4px">
+              <div style="width:14px;height:10px;background:rgba(167,139,250,0.3);border-radius:2px;"></div>
+              <div style="width:14px;height:10px;background:rgba(167,139,250,0.3);border-radius:2px;"></div>
+              <div style="width:14px;height:10px;background:rgba(167,139,250,0.3);border-radius:2px;"></div>
+              <div style="width:14px;height:10px;background:rgba(167,139,250,0.3);border-radius:2px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11U: KVM -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">11U</div>
+          <div class="rack-device dev-kvm" onclick="sendPrompt('Apa fungsi KVM Switch di data center?')">
+            <div class="dev-name">KVM Switch</div>
+            <div class="dev-sub">1 keyboard → N server</div>
+            <div class="dev-leds"><span class="led led-sm led-g"></span></div>
+          </div>
+        </div>
+
+        <!-- 12U: Console -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">12U</div>
+          <div class="rack-device dev-kvm" onclick="sendPrompt('Apa itu Console Server dan Out-of-Band Management seperti iDRAC?')">
+            <div class="dev-name">Console Server</div>
+            <div class="dev-sub">Out-of-band / iDRAC</div>
+            <div class="dev-leds"><span class="led led-sm led-g"></span></div>
+          </div>
+        </div>
+
+        <!-- 13U: NAS -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">13U</div>
+          <div class="rack-device dev-nas" onclick="sendPrompt('Jelaskan perbedaan NAS dan SAN dalam infrastruktur server')">
+            <div class="dev-name">NAS Storage</div>
+            <div class="dev-sub">Network Attached Storage</div>
+            <div class="dev-leds"><span class="led led-sm led-g"></span></div>
+          </div>
+        </div>
+
+        <!-- 14-15U: Blank -->
+        <div class="rack-unit-row">
+          <div class="rack-u-label">14U</div>
+          <div class="rack-device dev-blank"><div class="dev-name">— blank panel —</div></div>
+        </div>
+        <div class="rack-unit-row">
+          <div class="rack-u-label">15U</div>
+          <div class="rack-device dev-blank"><div class="dev-name">— blank panel —</div></div>
+        </div>
+
+        <!-- 16-18U: UPS (3U) -->
+        <div class="rack-unit-2u" style="height:60px">
+          <div class="rack-u-label-2u"><span>16U</span><span>17U</span><span style="font-size:6px">18U</span></div>
+          <div class="rack-device-2u dev-ups" onclick="sendPrompt('Mengapa UPS sangat penting di rak server?')">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="dev-name">UPS — 3U</div>
+                <div class="dev-sub">Uninterruptible Power Supply</div>
+              </div>
+              <div><span class="led led-sm led-g"></span></div>
+            </div>
+            <div class="batt-bar-wrap"><div class="batt-bar"></div></div>
+            <div style="font-size:8px;color:#f87171;margin-top:2px;">80% battery</div>
+          </div>
+        </div>
+
+        <!-- 19-20U: PDU -->
+        <div class="rack-unit-2u">
+          <div class="rack-u-label-2u"><span>19U</span><span>20U</span></div>
+          <div class="rack-device-2u dev-pdu" onclick="sendPrompt('Apa fungsi PDU Power Distribution Unit di rak server?')">
+            <div class="dev-name">PDU — 2U</div>
+            <div class="dev-sub">Power Distribution Unit</div>
+            <div style="display:flex;gap:4px;margin-top:4px">
+              <div style="width:9px;height:9px;border-radius:50%;border:1px solid #475569;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;border:1px solid #475569;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;border:1px solid #475569;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;border:1px solid #475569;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#22c55e;opacity:0.6;animation:ledGreen 2s ease-in-out infinite;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 21-22U: Spare -->
+        <div class="rack-unit-2u">
+          <div class="rack-u-label-2u"><span>21U</span><span>22U</span></div>
+          <div class="rack-device-2u dev-spare">
+            <div class="dev-name">— slot cadangan —</div>
+          </div>
+        </div>
+
+        <div class="rack-bottom-cap"></div>
+      </div><!-- end rack-frame -->
+
+      <!-- CALLOUT LABELS -->
+      <div class="rack-labels">
+        <div class="rack-label-item" onclick="sendPrompt('Jelaskan fungsi Firewall dalam rak server')">
+          <span class="label-dot" style="background:#f87171;box-shadow:0 0 6px rgba(248,113,113,0.5)"></span>
+          <span class="label-line"></span>
+          <span>🔐 Keamanan jaringan</span>
+        </div>
+        <div class="rack-label-item" onclick="sendPrompt('Apa bedanya Core Switch dan Access Switch?')">
+          <span class="label-dot" style="background:#38bdf8;box-shadow:0 0 6px rgba(56,189,248,0.5)"></span>
+          <span class="label-line"></span>
+          <span>🌐 Jaringan internal</span>
+        </div>
+        <div class="rack-label-item" onclick="sendPrompt('Jelaskan fungsi Router dalam rak server')">
+          <span class="label-dot" style="background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,0.5)"></span>
+          <span class="label-line"></span>
+          <span>📡 Routing ke internet</span>
+        </div>
+        <div class="rack-label-item" onclick="sendPrompt('Jelaskan fungsi Patch Panel dalam rak server')">
+          <span class="label-dot" style="background:#64748b"></span>
+          <span class="label-line"></span>
+          <span>🔌 Manajemen kabel</span>
+        </div>
+        <div class="rack-label-item" onclick="sendPrompt('Jelaskan fungsi server 1U dan 2U dalam data center')">
+          <span class="label-dot" style="background:#a78bfa;box-shadow:0 0 6px rgba(167,139,250,0.5)"></span>
+          <span class="label-line"></span>
+          <span>🖥️ Server komputasi</span>
+        </div>
+        <div class="rack-label-item" onclick="sendPrompt('Apa fungsi KVM Switch di data center?')">
+          <span class="label-dot" style="background:#f59e0b;box-shadow:0 0 6px rgba(245,158,11,0.5)"></span>
+          <span class="label-line"></span>
+          <span>🕹️ Remote manajemen</span>
+        </div>
+        <div class="rack-label-item" onclick="sendPrompt('Jelaskan perbedaan NAS dan SAN dalam infrastruktur server')">
+          <span class="label-dot" style="background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,0.5)"></span>
+          <span class="label-line"></span>
+          <span>💾 Penyimpanan data</span>
+        </div>
+        <div class="rack-label-item" onclick="sendPrompt('Mengapa UPS sangat penting di rak server?')">
+          <span class="label-dot" style="background:#ef4444;box-shadow:0 0 6px rgba(239,68,68,0.5)"></span>
+          <span class="label-line"></span>
+          <span>⚡ Backup listrik</span>
+        </div>
+        <div class="rack-label-item" onclick="sendPrompt('Apa fungsi PDU Power Distribution Unit di rak server?')">
+          <span class="label-dot" style="background:#94a3b8"></span>
+          <span class="label-line"></span>
+          <span>🔋 Distribusi daya</span>
+        </div>
+      </div>
+    </div><!-- end rack-layout -->
+  </div><!-- end rack-section -->
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       SECTION 3 — DALEMAN SERVER
+  ══════════════════════════════════════ -->
+  <div class="internals-section" style="margin-bottom:60px">
+    <div class="section-heading">03 &nbsp; Komponen Internal Server Fisik</div>
+
+    <div class="chassis-wrap">
+      <div class="motherboard" style="margin-top:10px">
+        <div class="mb-label">🟢 &nbsp; Motherboard Server Grade</div>
+
+        <!-- FANS -->
+        <div class="int-section-title">🌀 System Fans</div>
+        <div class="fans-row" style="margin-bottom:14px">
+          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
+        </div>
+
+        <!-- CPU -->
+        <div class="int-section-title">🧠 CPU Sockets — Dual Socket</div>
+        <div class="cpu-grid">
+          <div class="cpu-socket" onclick="sendPrompt('Apa bedanya CPU server Intel Xeon dengan CPU biasa Intel Core i7?')">
+            <div class="heatsink"></div>
+            <div class="cpu-chip"><div class="cpu-chip-text">XEON</div></div>
+            <div class="cpu-name">CPU Socket 1</div>
+            <div class="cpu-spec">Intel Xeon · 16 Core</div>
+            <div class="cpu-temp">🌡️ 68°C · Active</div>
+          </div>
+          <div class="cpu-socket" onclick="sendPrompt('Kenapa server enterprise pakai dual CPU socket?')">
+            <div class="heatsink"></div>
+            <div class="cpu-chip"><div class="cpu-chip-text">XEON</div></div>
+            <div class="cpu-name">CPU Socket 2</div>
+            <div class="cpu-spec">Intel Xeon · 16 Core</div>
+            <div class="cpu-temp">🌡️ 71°C · Active</div>
+          </div>
+        </div>
+
+        <!-- RAM -->
+        <div class="int-section-title">💾 RAM Slots — DDR4 ECC DIMM</div>
+        <div class="ram-row" style="margin-bottom:4px">
+          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick empty" onclick="sendPrompt('Apa yang terjadi kalau slot RAM server dikosongkan?')"><div class="ram-empty-label">empty</div></div>
+          <div class="ram-stick empty" onclick="sendPrompt('Apa yang terjadi kalau slot RAM server dikosongkan?')"><div class="ram-empty-label">empty</div></div>
+          <div class="ram-stick empty" onclick="sendPrompt('Apa yang terjadi kalau slot RAM server dikosongkan?')"><div class="ram-empty-label">empty</div></div>
+          <div class="ram-stick empty" onclick="sendPrompt('Apa yang terjadi kalau slot RAM server dikosongkan?')"><div class="ram-empty-label">empty</div></div>
+        </div>
+        <div style="font-size:9px;color:#5ba3f5;margin-bottom:14px">8 slot terisi · 128GB total · 4 slot kosong (expandable)</div>
+
+        <!-- RAID -->
+        <div class="raid-bar" onclick="sendPrompt('Jelaskan apa itu RAID Controller dan perbedaan RAID 0, 1, 5, 10 untuk server')">
+          <div>
+            <div class="raid-name">⚡ RAID Controller Card</div>
+            <div class="raid-spec">Dell PERC H730 / HP Smart Array — mengatur redundansi storage</div>
+          </div>
+          <div class="raid-badge">RAID 10</div>
+        </div>
+
+        <!-- HDD Bays -->
+        <div class="int-section-title">🗄️ Drive Bays — Hot Swappable</div>
+        <div class="hdd-row">
+          <div class="hdd-bay sas" onclick="sendPrompt('Apa bedanya SAS drive dan SATA drive untuk server?')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay sas" onclick="sendPrompt('Apa bedanya SAS drive dan SATA drive untuk server?')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay sas" onclick="sendPrompt('Apa bedanya SAS drive dan SATA drive untuk server?')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay sas" onclick="sendPrompt('Apa bedanya SAS drive dan SATA drive untuk server?')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay ssd" onclick="sendPrompt('Kapan sebaiknya server pakai SSD NVMe dibanding HDD SAS?')"><div class="hdd-icon">⚡</div><div class="hdd-type">SSD</div><div class="hdd-size">960GB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay ssd" onclick="sendPrompt('Kapan sebaiknya server pakai SSD NVMe dibanding HDD SAS?')"><div class="hdd-icon">⚡</div><div class="hdd-type">SSD</div><div class="hdd-size">960GB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay empty-bay" onclick="sendPrompt('Apa itu Hot Swappable drive di server?')"><div class="hdd-icon">➕</div><div class="hdd-type">empty</div><div class="hdd-size">—</div><div class="hdd-led off"></div></div>
+          <div class="hdd-bay empty-bay" onclick="sendPrompt('Apa itu Hot Swappable drive di server?')"><div class="hdd-icon">➕</div><div class="hdd-type">empty</div><div class="hdd-size">—</div><div class="hdd-led off"></div></div>
+        </div>
+        <div style="font-size:9px;color:#4ADE80;margin-bottom:14px">Hot-swappable — bisa ganti drive tanpa matiin server!</div>
+
+        <!-- NIC -->
+        <div class="int-section-title">🌐 Network Interface Card (NIC)</div>
+        <div class="nic-grid">
+          <div class="nic-card" onclick="sendPrompt('Jelaskan fungsi NIC 10GbE di server dan bedanya dengan NIC 1GbE biasa')">
+            <div class="nic-name">NIC — 10GbE</div>
+            <div class="nic-spec">Intel X550 · Dual Port</div>
+            <div class="nic-ports">
+              <div class="nic-port active"></div><div class="nic-port active"></div>
+              <div class="nic-port idle"></div><div class="nic-port idle"></div>
+            </div>
+          </div>
+          <div class="nic-card" onclick="sendPrompt('Apa itu iDRAC out-of-band management port di server Dell?')">
+            <div class="nic-name">iDRAC Port</div>
+            <div class="nic-spec">Out-of-Band Management</div>
+            <div class="nic-ports">
+              <div class="nic-port active"></div><div class="nic-port idle"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PSU -->
+        <div class="int-section-title">⚡ Power Supply Unit (Redundant)</div>
+        <div class="psu-grid">
+          <div class="psu-card" onclick="sendPrompt('Kenapa server enterprise pakai dual PSU redundant?')">
+            <div class="psu-header">
+              <div class="psu-name">PSU 1 — Primary</div>
+              <span class="led led-sm led-g"></span>
+            </div>
+            <div class="psu-spec">750W · 80 PLUS Platinum · Active</div>
+          </div>
+          <div class="psu-card" onclick="sendPrompt('Apa yang terjadi kalau satu PSU server mati tapi ada PSU kedua?')">
+            <div class="psu-header">
+              <div class="psu-name">PSU 2 — Standby</div>
+              <span class="led led-sm led-a"></span>
+            </div>
+            <div class="psu-spec">750W · 80 PLUS Platinum · Standby</div>
+          </div>
+        </div>
+
+        <!-- Cables -->
+        <div class="int-section-title">🔌 Power &amp; Data Cables</div>
+        <div class="cable-strip">
+          <div class="cable-seg" style="background:#E11D48;opacity:0.7;"></div>
+          <div class="cable-seg" style="background:#3B82F6;opacity:0.7;"></div>
+          <div class="cable-seg" style="background:#22C55E;opacity:0.7;"></div>
+          <div class="cable-seg" style="background:#F59E0B;opacity:0.7;"></div>
+          <div class="cable-seg" style="background:#8B5CF6;opacity:0.7;"></div>
+        </div>
+        <div class="cable-note">🔴 Power &nbsp;|&nbsp; 🔵 SATA &nbsp;|&nbsp; 🟢 SAS &nbsp;|&nbsp; 🟡 Management &nbsp;|&nbsp; 🟣 PCIe</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════
+       SECTION 4 — HYPERVISOR
+  ══════════════════════════════════════ -->
+  <div class="hypervisor-section">
+    <div class="section-heading">04 &nbsp; Hypervisor Server — Arsitektur VM</div>
+
+    <div class="server-box-outer">
+      <!-- Hardware -->
+      <div class="int-title-light" style="margin-top:10px">🔩 Hardware Layer</div>
+      <div class="hw-grid-light">
+        <div class="hw-card-light hw-cpu-l" onclick="sendPrompt('Jelaskan peran CPU dalam Hypervisor Server dan bagaimana CPU dibagi ke VM?')">
+          <div class="hw-icon">🧠</div>
+          <div class="hw-name">CPU</div>
+          <div class="hw-spec">32 Core · 3.4GHz<br>Intel Xeon</div>
+          <div class="hw-bar-wrap"><div class="hw-bar"></div></div>
+          <div class="hw-spec" style="margin-top:3px">65% terpakai</div>
+        </div>
+        <div class="hw-card-light hw-ram-l" onclick="sendPrompt('Jelaskan peran RAM dalam Hypervisor Server dan bagaimana RAM dibagi ke VM?')">
+          <div class="hw-icon">💾</div>
+          <div class="hw-name">RAM</div>
+          <div class="hw-spec">128 GB DDR4<br>ECC Memory</div>
+          <div class="hw-bar-wrap"><div class="hw-bar"></div></div>
+          <div class="hw-spec" style="margin-top:3px">48% terpakai</div>
+        </div>
+        <div class="hw-card-light hw-storage-l" onclick="sendPrompt('Jelaskan peran Storage HDD dan SSD dalam Hypervisor Server?')">
+          <div class="hw-icon">🗄️</div>
+          <div class="hw-name">Storage</div>
+          <div class="hw-spec">10 TB SSD NVMe<br>RAID 10</div>
+          <div class="hw-bar-wrap"><div class="hw-bar"></div></div>
+          <div class="hw-spec" style="margin-top:3px">72% terpakai</div>
+        </div>
+      </div>
+
+      <!-- Hypervisor bar -->
+      <div class="int-title-light">🖥️ Hypervisor Layer</div>
+      <div class="hypervisor-bar" onclick="sendPrompt('Jelaskan perbedaan Proxmox, VMware ESXi, dan Hyper-V sebagai hypervisor')">
+        <div class="hyp-left">
+          <div class="hyp-icon-large">⚡</div>
+          <div>
+            <div class="hyp-title">Proxmox VE / VMware ESXi</div>
+            <div class="hyp-sub">Mengatur &amp; membagi resource hardware ke semua VM</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <div class="hyp-badge">Hypervisor Type 1</div>
+          <div class="led-row">
+            <span class="led led-sm led-g"></span>
+            <span class="led led-sm led-g"></span>
+            <span class="led led-sm led-a"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VM Grid -->
+      <div class="int-title-light">💻 Virtual Machines</div>
+      <div class="vm-grid">
+        <div class="vm-card vm-blue" onclick="sendPrompt('Jelaskan fungsi VM untuk praktikum Network di lab komputer')">
+          <div class="vm-header"><div><div class="vm-id">VM-01</div><div class="vm-os">🐧 Ubuntu Server</div></div><div class="vm-status">● Running</div></div>
+          <div class="vm-role" style="color:#3B82F6">Network Lab PC-01</div>
+          <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">4c</div><div class="vm-r-val">8GB</div><div class="vm-r-val">200G</div></div>
+        </div>
+        <div class="vm-card vm-green" onclick="sendPrompt('Jelaskan fungsi VM untuk praktikum Database di lab komputer')">
+          <div class="vm-header"><div><div class="vm-id">VM-02</div><div class="vm-os">🪟 Windows 10</div></div><div class="vm-status">● Running</div></div>
+          <div class="vm-role" style="color:#16A34A">Database Lab PC-02</div>
+          <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">4c</div><div class="vm-r-val">8GB</div><div class="vm-r-val">200G</div></div>
+        </div>
+        <div class="vm-card vm-purple" onclick="sendPrompt('Jelaskan fungsi VM untuk Active Directory dan Authentication Server')">
+          <div class="vm-header"><div><div class="vm-id">VM-03</div><div class="vm-os">🪟 Windows Server</div></div><div class="vm-status">● Running</div></div>
+          <div class="vm-role" style="color:#9333EA">Active Directory</div>
+          <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">4c</div><div class="vm-r-val">16GB</div><div class="vm-r-val">500G</div></div>
+        </div>
+        <div class="vm-card vm-amber" onclick="sendPrompt('Jelaskan fungsi VM untuk Web Server dan Application Server di lab')">
+          <div class="vm-header"><div><div class="vm-id">VM-04</div><div class="vm-os">🐧 Debian</div></div><div class="vm-status">● Running</div></div>
+          <div class="vm-role" style="color:#D97706">Web &amp; App Server</div>
+          <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">2c</div><div class="vm-r-val">4GB</div><div class="vm-r-val">100G</div></div>
+        </div>
+        <div class="vm-card vm-coral" onclick="sendPrompt('Jelaskan fungsi VM untuk Backup Server di infrastruktur lab')">
+          <div class="vm-header"><div><div class="vm-id">VM-05</div><div class="vm-os">🐧 Ubuntu</div></div><div class="vm-status">● Running</div></div>
+          <div class="vm-role" style="color:#E11D48">Backup Server</div>
+          <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">2c</div><div class="vm-r-val">4GB</div><div class="vm-r-val">2TB</div></div>
+        </div>
+        <div class="vm-card vm-gray" onclick="sendPrompt('Apa itu VM snapshot dan kenapa penting untuk lab komputer?')">
+          <div class="vm-header"><div><div class="vm-id">VM-06</div><div class="vm-os">⏸️ Stopped</div></div><div class="vm-status" style="background:#F3F4F6;color:#6B7280">● Idle</div></div>
+          <div class="vm-role" style="color:#6B7280">Cadangan / Snapshot</div>
+          <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">—</div><div class="vm-r-val">—</div><div class="vm-r-val">500G</div></div>
+        </div>
+      </div>
+
+      <!-- Network bar -->
+      <div class="int-title-light">🌐 Network Layer</div>
+      <div class="network-bar" onclick="sendPrompt('Bagaimana VM terhubung ke jaringan melalui virtual switch di hypervisor?')">
+        <div class="hyp-left">
+          <div style="font-size:22px">🔌</div>
+          <div>
+            <div class="net-title-l">Virtual Switch + NIC</div>
+            <div class="net-sub-l">Semua VM terhubung ke jaringan lewat virtual switch internal</div>
+          </div>
+        </div>
+        <div class="net-ports">
+          <div class="net-port on"></div><div class="net-port on"></div>
+          <div class="net-port on"></div><div class="net-port on"></div>
+          <div class="net-port off"></div><div class="net-port off"></div>
+        </div>
+      </div>
+    </div><!-- end server-box-outer -->
+
+    <!-- Resource Summary -->
+    <div class="res-summary">
+      <div class="res-card res-cpu" onclick="sendPrompt('Apa yang terjadi kalau CPU server hypervisor overload?')">
+        <div class="res-label">🧠 CPU Usage</div>
+        <div class="res-bar-wrap"><div class="res-bar"></div></div>
+        <div class="res-text">20 / 32 core · 65%</div>
+      </div>
+      <div class="res-card res-ram" onclick="sendPrompt('Apa yang terjadi kalau RAM server hypervisor habis?')">
+        <div class="res-label">💾 RAM Usage</div>
+        <div class="res-bar-wrap"><div class="res-bar"></div></div>
+        <div class="res-text">62 / 128 GB · 48%</div>
+      </div>
+      <div class="res-card res-storage" onclick="sendPrompt('Apa itu RAID dan kenapa penting untuk storage server?')">
+        <div class="res-label">🗄️ Storage RAID</div>
+        <div class="res-bar-wrap"><div class="res-bar"></div></div>
+        <div class="res-text">7.2 / 10 TB · 72%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    <span>LEPKOM</span> · Universitas Gunadarma · Visualisasi Server Interaktif &nbsp;|&nbsp; Klik tiap komponen untuk penjelasan
+  </div>
+
+</div><!-- end main-wrap -->
+
+<script>
+  // Loading screen dismiss
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 2200);
+  });
+
+  // Staggered fade-in for cards
+  document.querySelectorAll('.type-cat').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    setTimeout(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, 2400 + i * 80);
+  });
+
+  // sendPrompt fallback for standalone HTML
+  if (typeof sendPrompt === 'undefined') {
+    window.sendPrompt = function(text) {
+      alert('Pertanyaan: ' + text);
+    };
+  }
+</script>
+</body>
+</html>
