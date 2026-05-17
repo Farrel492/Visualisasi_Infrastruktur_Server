@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Server Room — LEPKOM Gunadarma</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════ RESET & ROOT ═══════════════════════════ */
+:root {
+  --bg:        #04080f;
+  --bg2:       #080f1a;
+  --bg3:       #0c1524;
+  --panel:     #0a1020;
+  --border:    rgba(0,200,255,0.12);
+  --border2:   rgba(0,200,255,0.25);
+  --cyan:      #00c8ff;
+  --cyan2:     #00e5ff;
+  --green:     #00ff88;
+  --amber:     #ffb300;
+  --red:       #ff3d3d;
+  --purple:    #b48eff;
+  --text:      #c8dff0;
+  --text2:     #5a7a9a;
+  --text3:     #2a4a6a;
+  --mono:      'Share Tech Mono', monospace;
+  --body:      'Rajdhani', sans-serif;
+  --r:         6px;
+  --glow-c:    0 0 20px rgba(0,200,255,0.15);
+  --glow-g:    0 0 20px rgba(0,255,136,0.15);
+  --glow-r:    0 0 20px rgba(255,61,61,0.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ═══════════════════════════ BACKGROUND ═══════════════════════════ */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,200,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,200,255,0.025) 1px,transparent 1px);
+  background-size:32px 32px;
+  pointer-events:none;
+}
+body::after{
+  content:'';
+  position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(0,200,255,0.05),transparent);
+  pointer-events:none;
+}
+
+/* ═══════════════════════════ LOADER ═══════════════════════════ */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:#020508;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:20px;
+  transition:opacity .7s ease,visibility .7s ease;
+}
+#loader.out{opacity:0;visibility:hidden}
+.ld-title{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:4px;text-transform:uppercase}
+.ld-bar{width:240px;height:2px;background:rgba(0,200,255,0.1);border-radius:1px;overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));animation:ldFill 2s ease forwards;box-shadow:0 0 10px var(--cyan)}
+@keyframes ldFill{from{width:0}to{width:100%}}
+.ld-txt{font-family:var(--mono);font-size:10px;color:var(--text2)}
+
+/* ═══════════════════════════ LAYOUT ═══════════════════════════ */
+.app{
+  position:relative;z-index:1;
+  max-width:1200px;margin:0 auto;
+  padding:32px 20px 60px;
+  opacity:0;animation:reveal .6s ease 2.3s forwards;
+}
+@keyframes reveal{to{opacity:1}}
+
+/* ═══════════════════════════ HEADER ═══════════════════════════ */
+header{margin-bottom:36px;animation:slideDown .6s ease 2.4s both}
+@keyframes slideDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+.hd-tag{
+  font-family:var(--mono);font-size:10px;letter-spacing:3px;
+  color:var(--cyan);border:1px solid var(--border2);
+  padding:4px 14px;border-radius:20px;
+  background:rgba(0,200,255,0.05);display:inline-block;margin-bottom:12px;
+}
+h1{
+  font-size:clamp(24px,4vw,38px);font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;
+  background:linear-gradient(135deg,#fff 20%,var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:6px;
+}
+.hd-sub{font-size:14px;color:var(--text2);font-weight:400;letter-spacing:1px}
+
+/* ═══════════════════════════ TABS ═══════════════════════════ */
+.tabs{display:flex;gap:4px;margin-bottom:28px;border-bottom:1px solid var(--border);padding-bottom:0}
+.tab{
+  font-family:var(--mono);font-size:11px;letter-spacing:1px;
+  padding:8px 18px;border-radius:var(--r) var(--r) 0 0;
+  border:1px solid transparent;border-bottom:none;
+  color:var(--text2);cursor:pointer;transition:all .2s;
+  text-transform:uppercase;
+}
+.tab:hover{color:var(--text);background:rgba(0,200,255,0.05)}
+.tab.active{
+  color:var(--cyan);background:rgba(0,200,255,0.08);
+  border-color:var(--border2);
+  text-shadow:0 0 12px rgba(0,200,255,0.5);
+}
+
+/* ═══════════════════════════ PANELS ═══════════════════════════ */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ═══════════════════════════ SECTION TITLE ═══════════════════════════ */
+.sec-title{
+  font-family:var(--mono);font-size:10px;letter-spacing:3px;
+  color:var(--cyan);text-transform:uppercase;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+
+/* ═══════════════════════════ GRID ═══════════════════════════ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* ═══════════════════════════ CARDS ═══════════════════════════ */
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:16px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.card:hover{border-color:var(--border2);box-shadow:var(--glow-c)}
+
+/* ═══════════════════════════ LED ═══════════════════════════ */
+@keyframes lgn{0%,100%{opacity:1;box-shadow:0 0 6px var(--green),0 0 12px rgba(0,255,136,.4)}50%{opacity:.3;box-shadow:none}}
+@keyframes lam{0%,100%{opacity:1;box-shadow:0 0 6px var(--amber),0 0 12px rgba(255,179,0,.4)}50%{opacity:.2;box-shadow:none}}
+@keyframes lrd{0%,100%{opacity:1;box-shadow:0 0 6px var(--red),0 0 14px rgba(255,61,61,.5)}50%{opacity:.15;box-shadow:none}}
+@keyframes lcy{0%,100%{opacity:1;box-shadow:0 0 6px var(--cyan),0 0 12px rgba(0,200,255,.4)}50%{opacity:.3;box-shadow:none}}
+.led{display:inline-block;border-radius:50%}
+.led-g{background:var(--green);animation:lgn 1.8s ease-in-out infinite}
+.led-a{background:var(--amber);animation:lam .7s ease-in-out infinite}
+.led-r{background:var(--red);animation:lrd .5s ease-in-out infinite}
+.led-c{background:var(--cyan);animation:lcy 2s ease-in-out infinite}
+.led-sm{width:7px;height:7px}
+.led-md{width:10px;height:10px}
+
+/* ═══════════════════════════ GAUGE ═══════════════════════════ */
+.gauge-wrap{position:relative;width:110px;height:60px;margin:0 auto}
+.gauge-svg{width:110px;height:60px}
+.gauge-val{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:18px;font-weight:700;
+  text-shadow:0 0 10px currentColor;
+}
+.gauge-label{font-size:11px;color:var(--text2);text-align:center;margin-top:4px;letter-spacing:1px}
+
+/* ═══════════════════════════ BAR ═══════════════════════════ */
+.bar-wrap{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-top:6px}
+.bar-fill{height:100%;border-radius:3px;position:relative;overflow:hidden}
+.bar-fill::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  animation:shimmer 2s linear infinite;
+}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+
+/* ═══════════════════════════ METRIC CARD ═══════════════════════════ */
+.metric{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px;text-align:center;
+  transition:all .2s;cursor:pointer;
+}
+.metric:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--glow-c)}
+.metric-icon{font-size:22px;margin-bottom:6px}
+.metric-val{font-family:var(--mono);font-size:22px;font-weight:700;line-height:1}
+.metric-label{font-size:11px;color:var(--text2);margin-top:4px;letter-spacing:1px}
+.metric-trend{font-size:10px;margin-top:6px}
+.trend-ok{color:var(--green)}
+.trend-warn{color:var(--amber)}
+.trend-crit{color:var(--red)}
+
+/* ═══════════════════════════ ALERT ═══════════════════════════ */
+.alert-list{display:flex;flex-direction:column;gap:8px}
+.alert-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;border-radius:var(--r);
+  border:1px solid;font-size:13px;
+  transition:all .2s;cursor:pointer;
+}
+.alert-item:hover{filter:brightness(1.1)}
+.alert-ok  {background:rgba(0,255,136,.05);border-color:rgba(0,255,136,.2);color:#a0ffd0}
+.alert-warn{background:rgba(255,179,0,.05);border-color:rgba(255,179,0,.2);color:#ffe0a0}
+.alert-crit{background:rgba(255,61,61,.08);border-color:rgba(255,61,61,.25);color:#ffb0b0}
+.alert-time{font-family:var(--mono);font-size:10px;margin-left:auto;opacity:.6}
+
+/* ═══════════════════════════ FLOOR PLAN ═══════════════════════════ */
+.floorplan{
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:var(--r);
+  padding:20px;
+  position:relative;
+  overflow:hidden;
+}
+.floorplan::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,200,255,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,200,255,0.04) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.fp-inner{position:relative;z-index:1}
+.fp-room{
+  border:2px solid rgba(0,200,255,0.3);
+  border-radius:4px;
+  position:relative;
+  padding:14px;
+  background:rgba(0,200,255,0.02);
+}
+.fp-room-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:2px;
+  color:var(--text2);text-transform:uppercase;margin-bottom:14px;
+}
+
+/* rack in floorplan */
+.fp-racks{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.fp-rack{
+  width:52px;border-radius:4px;
+  background:var(--bg3);
+  border:1px solid rgba(0,200,255,0.2);
+  padding:8px 6px;
+  text-align:center;cursor:pointer;
+  transition:all .25s;
+  position:relative;
+}
+.fp-rack:hover{border-color:var(--cyan);box-shadow:0 0 16px rgba(0,200,255,0.2);transform:scale(1.05)}
+.fp-rack-icon{font-size:20px;margin-bottom:4px}
+.fp-rack-name{font-family:var(--mono);font-size:8px;color:var(--text2)}
+.fp-rack-status{width:7px;height:7px;border-radius:50%;margin:4px auto 0}
+
+/* airflow arrows */
+.airflow-row{display:flex;align-items:center;justify-content:center;gap:4px;margin:8px 0}
+.af-arrow{font-size:16px;transition:opacity .5s}
+.af-cold{color:#00e5ff;animation:afPulse 2s ease-in-out infinite}
+.af-hot {color:#ff6b35;animation:afPulse 2s ease-in-out infinite .5s}
+@keyframes afPulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* floor zones */
+.fp-zones{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.fp-zone{
+  border-radius:4px;padding:8px 10px;border:1px solid;
+  font-size:11px;cursor:pointer;transition:all .2s;text-align:center;
+}
+.fp-zone:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+/* ═══════════════════════════ TEMP MAP ═══════════════════════════ */
+.temp-map{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.temp-cell{
+  aspect-ratio:1;border-radius:4px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,0.05);
+}
+.temp-cell:hover{transform:scale(1.05);z-index:2}
+.temp-cell .tc-val{font-family:var(--mono);font-size:13px;font-weight:700}
+.temp-cell .tc-label{font-size:9px;margin-top:2px;opacity:.7}
+
+/* ═══════════════════════════ POWER DIAGRAM ═══════════════════════════ */
+.power-flow{display:flex;flex-direction:column;gap:8px}
+.pf-node{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);padding:12px 16px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all .2s;position:relative;
+}
+.pf-node:hover{border-color:var(--border2);box-shadow:var(--glow-c)}
+.pf-icon{font-size:20px;width:32px;text-align:center}
+.pf-name{font-size:13px;font-weight:600;color:var(--text)}
+.pf-spec{font-size:11px;color:var(--text2);margin-top:2px}
+.pf-arrow{
+  display:flex;justify-content:center;align-items:center;
+  gap:3px;padding:2px 0;
+}
+.pf-arrow-line{
+  height:20px;width:2px;background:linear-gradient(180deg,var(--cyan),transparent);
+  margin:0 auto;
+}
+.pf-arrow-head{font-size:12px;color:var(--cyan);display:block;text-align:center;animation:bounce .8s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(-2px)}50%{transform:translateY(2px)}}
+.pf-usage{margin-left:auto;text-align:right}
+.pf-usage-val{font-family:var(--mono);font-size:14px;color:var(--amber)}
+.pf-usage-label{font-size:10px;color:var(--text2)}
+.pf-bar{margin-top:6px}
+
+/* ═══════════════════════════ SECURITY ═══════════════════════════ */
+.sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sec-item{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px;
+  cursor:pointer;transition:all .2s;
+}
+.sec-item:hover{border-color:var(--border2);box-shadow:var(--glow-c)}
+.sec-item-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sec-item-icon{font-size:20px}
+.sec-item-name{font-size:13px;font-weight:600}
+.sec-item-status{margin-left:auto;font-size:11px;padding:2px 8px;border-radius:10px}
+.status-on {background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.2)}
+.status-off{background:rgba(255,61,61,.1);color:var(--red);border:1px solid rgba(255,61,61,.2)}
+.sec-detail{font-size:11px;color:var(--text2);line-height:1.6}
+
+/* ═══════════════════════════ COOLING ═══════════════════════════ */
+.cooling-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cool-unit{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px;cursor:pointer;transition:all .2s;
+}
+.cool-unit:hover{border-color:var(--border2);box-shadow:var(--glow-c)}
+.cool-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cool-icon{font-size:22px}
+.cool-name{font-size:13px;font-weight:600}
+.cool-stat{margin-left:auto}
+.cool-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cool-metric{text-align:center}
+.cool-metric-val{font-family:var(--mono);font-size:16px;font-weight:700}
+.cool-metric-label{font-size:10px;color:var(--text2);margin-top:2px}
+@keyframes fanSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.spin{display:inline-block;animation:fanSpin 2s linear infinite}
+
+/* ═══════════════════════════ TIMELINE ═══════════════════════════ */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:14px;padding-bottom:16px;position:relative}
+.tl-item::before{content:'';position:absolute;left:17px;top:28px;bottom:0;width:1px;background:var(--border)}
+.tl-item:last-child::before{display:none}
+.tl-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:1px solid}
+.tl-content{flex:1;padding-top:6px}
+.tl-time{font-family:var(--mono);font-size:10px;color:var(--text2)}
+.tl-desc{font-size:12px;margin-top:2px;line-height:1.5}
+
+/* ═══════════════════════════ RESPONSIVE ═══════════════════════════ */
+@media(max-width:700px){
+  .g2,.g3,.g4,.sec-grid,.cooling-grid{grid-template-columns:1fr}
+  .temp-map{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-title">LEPKOM Server Room</div>
+  <div class="ld-bar"><div class="ld-fill"></div></div>
+  <div class="ld-txt" id="ldTxt">Initializing environment systems...</div>
+</div>
+
+<!-- APP -->
+<div class="app">
+  <header>
+    <div class="hd-tag">LEPKOM · Universitas Gunadarma · Server Room</div>
+    <h1>Server Room Dashboard</h1>
+    <div class="hd-sub">Monitoring environment, power, cooling, security & layout ruangan server</div>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="setTab('overview')">Overview</div>
+    <div class="tab" onclick="setTab('floorplan')">Floor Plan</div>
+    <div class="tab" onclick="setTab('environment')">Environment</div>
+    <div class="tab" onclick="setTab('power')">Power</div>
+    <div class="tab" onclick="setTab('cooling')">Cooling</div>
+    <div class="tab" onclick="setTab('security')">Security</div>
+    <div class="tab" onclick="setTab('log')">Event Log</div>
+  </div>
+
+  <!-- ══════ TAB: OVERVIEW ══════ -->
+  <div class="panel active" id="tab-overview">
+    <div class="sec-title">Real-time Environment Status</div>
+    <div class="g4" style="margin-bottom:20px">
+      <div class="metric" onclick="setTab('environment')">
+        <div class="metric-icon">🌡️</div>
+        <div class="metric-val" id="ov-temp" style="color:#00c8ff">22.4°C</div>
+        <div class="metric-label">Suhu Ruangan</div>
+        <div class="metric-trend trend-ok">▲ Normal (18–27°C)</div>
+      </div>
+      <div class="metric" onclick="setTab('environment')">
+        <div class="metric-icon">💧</div>
+        <div class="metric-val" id="ov-hum" style="color:#b48eff">51%</div>
+        <div class="metric-label">Kelembaban</div>
+        <div class="metric-trend trend-ok">✓ Normal (40–60%)</div>
+      </div>
+      <div class="metric" onclick="setTab('power')">
+        <div class="metric-icon">⚡</div>
+        <div class="metric-val" id="ov-pwr" style="color:#ffb300">4.2kW</div>
+        <div class="metric-label">Power Usage</div>
+        <div class="metric-trend trend-ok">68% kapasitas</div>
+      </div>
+      <div class="metric" onclick="setTab('cooling')">
+        <div class="metric-icon">❄️</div>
+        <div class="metric-val" id="ov-cool" style="color:#00e5ff">ON</div>
+        <div class="metric-label">AC / CRAC</div>
+        <div class="metric-trend trend-ok">✓ Aktif · 2 unit</div>
+      </div>
+    </div>
+
+    <div class="g2" style="margin-bottom:20px">
+      <!-- System Status -->
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:12px">Status Sistem</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">🖥️ &nbsp;Server HP ProLiant (3x)</span>
+            <span class="led led-sm led-g"></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">🖥️ &nbsp;Server IBM System (3x)</span>
+            <span class="led led-sm led-g"></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">🌐 &nbsp;Core Switch</span>
+            <span class="led led-sm led-g"></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">🔁 &nbsp;KVM Switch</span>
+            <span class="led led-sm led-g"></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">🔋 &nbsp;UPS</span>
+            <span class="led led-sm led-g"></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">❄️ &nbsp;AC Unit 1</span>
+            <span class="led led-sm led-g"></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">❄️ &nbsp;AC Unit 2</span>
+            <span class="led led-sm led-c"></span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px">🔐 &nbsp;Door Access</span>
+            <span class="led led-sm led-g"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:12px">Recent Alerts</div>
+        <div class="alert-list">
+          <div class="alert-item alert-ok">
+            <span class="led led-sm led-g"></span>
+            <span>Semua sistem berjalan normal</span>
+            <span class="alert-time">08:04</span>
+          </div>
+          <div class="alert-item alert-warn">
+            <span class="led led-sm led-a"></span>
+            <span>AC Unit 2 — filter perlu dibersihkan</span>
+            <span class="alert-time">07:30</span>
+          </div>
+          <div class="alert-item alert-ok">
+            <span class="led led-sm led-g"></span>
+            <span>UPS baterai 82% — kondisi baik</span>
+            <span class="alert-time">06:00</span>
+          </div>
+          <div class="alert-item alert-ok">
+            <span class="led led-sm led-g"></span>
+            <span>Backup harian selesai — 3 VM snapshot</span>
+            <span class="alert-time">03:00</span>
+          </div>
+          <div class="alert-item alert-warn">
+            <span class="led led-sm led-a"></span>
+            <span>Rack B — suhu 26.1°C mendekati batas</span>
+            <span class="alert-time">Kemarin</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPS Status -->
+    <div class="card">
+      <div class="sec-title" style="margin-bottom:12px">UPS Status</div>
+      <div class="g3">
+        <div>
+          <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Kapasitas baterai</div>
+          <div style="font-family:var(--mono);font-size:28px;color:var(--green)">82%</div>
+          <div class="bar-wrap" style="height:8px;margin-top:8px">
+            <div class="bar-fill" style="background:linear-gradient(90deg,var(--green),#00ff44);width:82%"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">Estimasi runtime: ~45 menit</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Input voltage</div>
+          <div style="font-family:var(--mono);font-size:28px;color:var(--cyan)">220V</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">PLN · Stabil</div>
+          <div style="font-size:11px;color:var(--green);margin-top:2px">✓ Tidak ada fluktuasi</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Load output</div>
+          <div style="font-family:var(--mono);font-size:28px;color:var(--amber)">68%</div>
+          <div class="bar-wrap" style="height:8px;margin-top:8px">
+            <div class="bar-fill" style="background:linear-gradient(90deg,var(--amber),#ff9900);width:68%"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">4.2kW / 6.2kW kapasitas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ TAB: FLOOR PLAN ══════ -->
+  <div class="panel" id="tab-floorplan">
+    <div class="sec-title">Denah Ruangan Server</div>
+
+    <div class="floorplan">
+      <div class="fp-inner">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--cyan);letter-spacing:2px">LEPKOM SERVER ROOM — LAYOUT VIEW</div>
+          <div style="display:flex;gap:12px;font-size:11px">
+            <span style="color:#00e5ff">❄ Cold aisle</span>
+            <span style="color:#ff6b35">🔥 Hot aisle</span>
+          </div>
+        </div>
+
+        <!-- ROOM BOUNDARY -->
+        <div class="fp-room">
+          <div class="fp-room-label">Ruangan server utama · ~5m × 4m</div>
+
+          <!-- COLD AISLE TOP -->
+          <div style="text-align:center;margin-bottom:8px">
+            <div style="display:inline-block;background:rgba(0,229,255,0.08);border:1px dashed rgba(0,229,255,0.3);border-radius:4px;padding:6px 24px;font-size:11px;color:#00e5ff;letter-spacing:1px">
+              ❄️ COLD AISLE — Suplai udara dingin dari AC
+            </div>
+          </div>
+
+          <!-- AIRFLOW DOWN -->
+          <div class="airflow-row">
+            <span class="af-arrow af-cold">↓</span>
+            <span class="af-arrow af-cold" style="animation-delay:.2s">↓</span>
+            <span class="af-arrow af-cold" style="animation-delay:.4s">↓</span>
+            <span class="af-arrow af-cold" style="animation-delay:.6s">↓</span>
+            <span class="af-arrow af-cold" style="animation-delay:.8s">↓</span>
+          </div>
+
+          <!-- RACKS ROW -->
+          <div class="fp-racks">
+            <div class="fp-rack" onclick="showRackDetail('A')">
+              <div class="fp-rack-icon">🗄️</div>
+              <div style="font-family:var(--mono);font-size:9px;color:var(--cyan)">RACK A</div>
+              <div class="fp-rack-name">HP ProLiant</div>
+              <div class="fp-rack-status led led-sm led-g" style="margin:4px auto 0"></div>
+              <div style="font-size:9px;color:var(--green);margin-top:2px">22°C</div>
+            </div>
+            <div class="fp-rack" onclick="showRackDetail('B')">
+              <div class="fp-rack-icon">🗄️</div>
+              <div style="font-family:var(--mono);font-size:9px;color:var(--cyan)">RACK B</div>
+              <div class="fp-rack-name">HP + IBM</div>
+              <div class="fp-rack-status led led-sm led-a" style="margin:4px auto 0"></div>
+              <div style="font-size:9px;color:var(--amber);margin-top:2px">26°C</div>
+            </div>
+            <div class="fp-rack" onclick="showRackDetail('C')">
+              <div class="fp-rack-icon">🗄️</div>
+              <div style="font-family:var(--mono);font-size:9px;color:var(--cyan)">RACK C</div>
+              <div class="fp-rack-name">IBM System</div>
+              <div class="fp-rack-status led led-sm led-g" style="margin:4px auto 0"></div>
+              <div style="font-size:9px;color:var(--green);margin-top:2px">23°C</div>
+            </div>
+            <div class="fp-rack" onclick="showRackDetail('D')">
+              <div class="fp-rack-icon">🗄️</div>
+              <div style="font-family:var(--mono);font-size:9px;color:var(--cyan)">RACK D</div>
+              <div class="fp-rack-name">Network</div>
+              <div class="fp-rack-status led led-sm led-g" style="margin:4px auto 0"></div>
+              <div style="font-size:9px;color:var(--green);margin-top:2px">21°C</div>
+            </div>
+          </div>
+
+          <!-- AIRFLOW UP (hot) -->
+          <div class="airflow-row">
+            <span class="af-arrow af-hot">↑</span>
+            <span class="af-arrow af-hot" style="animation-delay:.2s">↑</span>
+            <span class="af-arrow af-hot" style="animation-delay:.4s">↑</span>
+            <span class="af-arrow af-hot" style="animation-delay:.6s">↑</span>
+            <span class="af-arrow af-hot" style="animation-delay:.8s">↑</span>
+          </div>
+
+          <!-- HOT AISLE -->
+          <div style="text-align:center;margin-top:8px;margin-bottom:16px">
+            <div style="display:inline-block;background:rgba(255,107,53,0.08);border:1px dashed rgba(255,107,53,0.3);border-radius:4px;padding:6px 24px;font-size:11px;color:#ff6b35;letter-spacing:1px">
+              🔥 HOT AISLE — Udara panas keluar dari server
+            </div>
+          </div>
+
+          <!-- ZONES -->
+          <div class="fp-zones">
+            <div class="fp-zone" style="background:rgba(0,200,255,0.05);border-color:rgba(0,200,255,0.2);color:var(--cyan)" onclick="setTab('cooling')">
+              ❄️ AC / CRAC Unit (2x)<br>
+              <span style="font-size:10px;color:var(--text2)">Dinding selatan · 18°C supply</span>
+            </div>
+            <div class="fp-zone" style="background:rgba(255,179,0,0.05);border-color:rgba(255,179,0,0.2);color:var(--amber)" onclick="setTab('power')">
+              ⚡ Panel Listrik + UPS<br>
+              <span style="font-size:10px;color:var(--text2)">Dinding barat · 6.2kW kapasitas</span>
+            </div>
+            <div class="fp-zone" style="background:rgba(180,142,255,0.05);border-color:rgba(180,142,255,0.2);color:var(--purple)" onclick="setTab('security')">
+              🔐 Pintu Akses Utama<br>
+              <span style="font-size:10px;color:var(--text2)">Kartu akses + CCTV · terkunci</span>
+            </div>
+            <div class="fp-zone" style="background:rgba(0,255,136,0.05);border-color:rgba(0,255,136,0.2);color:var(--green)">
+              🖥️ KVM Console Station<br>
+              <span style="font-size:10px;color:var(--text2)">Meja teknisi · monitor 1x</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rack detail popup -->
+        <div id="rack-detail" style="display:none;margin-top:14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:14px">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--cyan);margin-bottom:10px" id="rack-detail-title">RACK DETAIL</div>
+          <div id="rack-detail-body" style="font-size:13px;line-height:1.8;color:var(--text)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ TAB: ENVIRONMENT ══════ -->
+  <div class="panel" id="tab-environment">
+    <div class="sec-title">Temperature & Humidity Map</div>
+
+    <!-- Temp heatmap -->
+    <div class="card" style="margin-bottom:16px">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:14px">Peta suhu per zona ruangan (°C) — klik zona untuk detail</div>
+      <div class="temp-map">
+        <div class="temp-cell" style="background:rgba(0,200,255,0.15)" onclick="tempAlert('Zona AC 1','19.2°C','Sangat dingin — dekat AC unit 1')">
+          <div class="tc-val" style="color:#00e5ff">19.2</div>
+          <div class="tc-label">AC Zone 1</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(0,200,255,0.2)" onclick="tempAlert('Rack A Front','21.4°C','Normal — cold aisle rack A')">
+          <div class="tc-val" style="color:#00c8ff">21.4</div>
+          <div class="tc-label">Rack A Front</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(0,200,255,0.12)" onclick="tempAlert('Center','22.8°C','Normal — tengah ruangan')">
+          <div class="tc-val" style="color:#80dfff">22.8</div>
+          <div class="tc-label">Center</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(0,200,255,0.18)" onclick="tempAlert('Rack D Front','21.0°C','Normal — cold aisle rack D')">
+          <div class="tc-val" style="color:#00c8ff">21.0</div>
+          <div class="tc-label">Rack D Front</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(0,200,255,0.15)" onclick="tempAlert('Zona AC 2','19.8°C','Sangat dingin — dekat AC unit 2')">
+          <div class="tc-val" style="color:#00e5ff">19.8</div>
+          <div class="tc-label">AC Zone 2</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(255,179,0,0.2)" onclick="tempAlert('Rack A Rear','27.5°C','⚠️ Mendekati batas — hot aisle rack A')">
+          <div class="tc-val" style="color:#ffb300">27.5</div>
+          <div class="tc-label">Rack A Rear</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(255,107,53,0.25)" onclick="tempAlert('Rack B Rear','29.1°C','⚠️ Warning — hot aisle rack B tinggi')">
+          <div class="tc-val" style="color:#ff6b35">29.1</div>
+          <div class="tc-label">Rack B Rear</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(255,179,0,0.15)" onclick="tempAlert('Rack C Rear','26.8°C','Normal — hot aisle rack C')">
+          <div class="tc-val" style="color:#ffb300">26.8</div>
+          <div class="tc-label">Rack C Rear</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(255,179,0,0.12)" onclick="tempAlert('Rack D Rear','25.4°C','Normal — hot aisle rack D')">
+          <div class="tc-val" style="color:#ffcc44">25.4</div>
+          <div class="tc-label">Rack D Rear</div>
+        </div>
+        <div class="temp-cell" style="background:rgba(255,107,53,0.15)" onclick="tempAlert('Near PDU','27.0°C','Normal — dekat panel listrik')">
+          <div class="tc-val" style="color:#ff8855">27.0</div>
+          <div class="tc-label">Near PDU</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:20px;margin-top:12px;justify-content:center;font-size:11px">
+        <span style="color:#00e5ff">■ Dingin (18-22°C)</span>
+        <span style="color:#80dfff">■ Normal (22-25°C)</span>
+        <span style="color:#ffb300">■ Hangat (25-28°C)</span>
+        <span style="color:#ff6b35">■ Panas (28°C+)</span>
+      </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="g2">
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:12px">Sensor Readings</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>🌡️ Suhu rata-rata</span>
+              <span style="font-family:var(--mono);color:var(--cyan)">22.4°C</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,#00c8ff,#00e5ff);width:42%"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-top:2px"><span>Min: 18°C</span><span>Max: 27°C</span></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>💧 Kelembaban</span>
+              <span style="font-family:var(--mono);color:var(--purple)">51%</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,var(--purple),#d4b0ff);width:51%"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-top:2px"><span>Min: 40%</span><span>Max: 60%</span></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>💨 Airflow tekanan</span>
+              <span style="font-family:var(--mono);color:var(--green)">+0.02 psi</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,var(--green),#44ffaa);width:55%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>🔥 Hot aisle peak</span>
+              <span style="font-family:var(--mono);color:#ff6b35">29.1°C</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,#ff6b35,#ff3d3d);width:72%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:12px">Threshold Alerts</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(0,255,136,0.05);border-radius:4px;border:1px solid rgba(0,255,136,0.15)">
+            <span>🌡️ Suhu max threshold</span>
+            <span style="font-family:var(--mono);color:var(--green)">27°C ✓</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(255,179,0,0.05);border-radius:4px;border:1px solid rgba(255,179,0,0.15)">
+            <span>🔥 Rack B hot aisle</span>
+            <span style="font-family:var(--mono);color:var(--amber)">29.1°C ⚠️</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(0,255,136,0.05);border-radius:4px;border:1px solid rgba(0,255,136,0.15)">
+            <span>💧 Humidity min</span>
+            <span style="font-family:var(--mono);color:var(--green)">40% ✓</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(0,255,136,0.05);border-radius:4px;border:1px solid rgba(0,255,136,0.15)">
+            <span>🚨 Smoke detector</span>
+            <span style="font-family:var(--mono);color:var(--green)">Clear ✓</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:rgba(0,255,136,0.05);border-radius:4px;border:1px solid rgba(0,255,136,0.15)">
+            <span>💧 Water/leak sensor</span>
+            <span style="font-family:var(--mono);color:var(--green)">Dry ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ TAB: POWER ══════ -->
+  <div class="panel" id="tab-power">
+    <div class="sec-title">Power Infrastructure</div>
+
+    <div class="g2">
+      <div>
+        <div class="power-flow">
+          <div class="pf-node" onclick="alert('PLN: Sumber listrik utama dari PT PLN. Tegangan 220V AC, frekuensi 50Hz.')">
+            <div class="pf-icon">🏭</div>
+            <div>
+              <div class="pf-name">PLN — Sumber Listrik Utama</div>
+              <div class="pf-spec">220V AC · 50Hz · Stable</div>
+            </div>
+            <div class="pf-usage">
+              <div class="pf-usage-val">220V</div>
+              <div class="pf-usage-label">Input</div>
+            </div>
+          </div>
+
+          <div class="pf-arrow"><div class="pf-arrow-line"></div><span class="pf-arrow-head">▼</span></div>
+
+          <div class="pf-node" onclick="alert('Panel Listrik: Mengatur distribusi daya ke seluruh perangkat. Dilengkapi MCB (circuit breaker) per jalur.')">
+            <div class="pf-icon">⚙️</div>
+            <div>
+              <div class="pf-name">Panel Listrik / Distribution Board</div>
+              <div class="pf-spec">MCB per jalur · 3 phase · Grounding</div>
+            </div>
+            <div class="pf-usage">
+              <div class="pf-usage-val">6.2kW</div>
+              <div class="pf-usage-label">Kapasitas</div>
+            </div>
+          </div>
+
+          <div class="pf-arrow"><div class="pf-arrow-line"></div><span class="pf-arrow-head">▼</span></div>
+
+          <div class="pf-node" onclick="alert('UPS: Uninterruptible Power Supply. Melindungi server dari mati listrik mendadak. Baterai memberikan runtime ~45 menit untuk graceful shutdown.')">
+            <div class="pf-icon">🔋</div>
+            <div>
+              <div class="pf-name">UPS — Uninterruptible Power Supply</div>
+              <div class="pf-spec">Runtime ~45 menit · Baterai 82% · 6.2kVA</div>
+            </div>
+            <div class="pf-usage">
+              <div class="pf-usage-val" style="color:var(--green)">82%</div>
+              <div class="pf-usage-label">Battery</div>
+            </div>
+          </div>
+
+          <div class="pf-arrow"><div class="pf-arrow-line"></div><span class="pf-arrow-head">▼</span></div>
+
+          <div class="pf-node" onclick="alert('PDU: Power Distribution Unit. Stop kontak versi rack yang mendistribusikan listrik ke tiap perangkat dalam rak secara teratur.')">
+            <div class="pf-icon">🔌</div>
+            <div>
+              <div class="pf-name">PDU — Power Distribution Unit</div>
+              <div class="pf-spec">Per-rack · 8 outlet · Monitoring per port</div>
+            </div>
+            <div class="pf-usage">
+              <div class="pf-usage-val">4.2kW</div>
+              <div class="pf-usage-label">Used</div>
+            </div>
+          </div>
+
+          <div class="pf-arrow"><div class="pf-arrow-line"></div><span class="pf-arrow-head">▼</span></div>
+
+          <div class="pf-node" onclick="alert('Server & Perangkat: Semua server HP, IBM, switch, dan KVM mendapat daya dari PDU yang sudah diproteksi UPS.')">
+            <div class="pf-icon">🖥️</div>
+            <div>
+              <div class="pf-name">Server + Switch + KVM</div>
+              <div class="pf-spec">HP ProLiant (3x) · IBM (3x) · Switch · KVM</div>
+            </div>
+            <div class="pf-usage">
+              <div class="pf-usage-val" style="color:var(--amber)">68%</div>
+              <div class="pf-usage-label">Load</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Power per device -->
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:12px">Power per Perangkat</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>🖥️ HP ProLiant (3x)</span>
+              <span style="font-family:var(--mono);color:var(--amber)">1.8kW</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,var(--amber),#ffcc00);width:43%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>🖥️ IBM System (3x)</span>
+              <span style="font-family:var(--mono);color:var(--amber)">1.4kW</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,var(--amber),#ffcc00);width:33%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>❄️ AC Unit (2x)</span>
+              <span style="font-family:var(--mono);color:#00c8ff">0.7kW</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,var(--cyan),var(--cyan2));width:17%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>🌐 Switch + KVM</span>
+              <span style="font-family:var(--mono);color:var(--green)">0.2kW</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,var(--green),#44ffaa);width:5%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span>💡 Lighting + misc</span>
+              <span style="font-family:var(--mono);color:var(--text2)">0.1kW</span>
+            </div>
+            <div class="bar-wrap"><div class="bar-fill" style="background:linear-gradient(90deg,#555,#777);width:2%"></div></div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600">
+              <span>Total</span>
+              <span style="font-family:var(--mono);color:var(--amber)">4.2kW / 6.2kW</span>
+            </div>
+            <div class="bar-wrap" style="height:8px;margin-top:6px"><div class="bar-fill" style="background:linear-gradient(90deg,var(--amber),#ff9900);width:68%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ TAB: COOLING ══════ -->
+  <div class="panel" id="tab-cooling">
+    <div class="sec-title">Sistem Pendingin Ruangan</div>
+
+    <!-- Principle card -->
+    <div class="card" style="margin-bottom:16px">
+      <div style="font-size:13px;line-height:1.8;color:var(--text)">
+        Ruangan server menggunakan konsep <strong style="color:var(--cyan)">hot aisle / cold aisle containment</strong> —
+        rak server diatur berhadap-hadapan sehingga udara dingin masuk dari depan rak (cold aisle) dan udara panas dibuang ke belakang rak (hot aisle).
+        AC/CRAC unit mensuplai udara dingin ke cold aisle dan mengambil udara panas dari hot aisle untuk didinginkan kembali.
+      </div>
+    </div>
+
+    <div class="cooling-grid" style="margin-bottom:16px">
+      <div class="cool-unit" onclick="alert('AC Unit 1: Computer Room Air Conditioning unit utama. Kapasitas 3 ton, suhu supply 18°C. Berjalan normal.')">
+        <div class="cool-header">
+          <div class="cool-icon"><span class="spin">❄️</span></div>
+          <div>
+            <div class="cool-name">AC / CRAC Unit 1</div>
+            <div style="font-size:10px;color:var(--green)">● Active — Primary</div>
+          </div>
+          <div class="cool-stat"><span class="led led-sm led-g"></span></div>
+        </div>
+        <div class="cool-metrics">
+          <div class="cool-metric">
+            <div class="cool-metric-val" style="color:var(--cyan)">18°C</div>
+            <div class="cool-metric-label">Supply temp</div>
+          </div>
+          <div class="cool-metric">
+            <div class="cool-metric-val" style="color:#ff6b35">28°C</div>
+            <div class="cool-metric-label">Return temp</div>
+          </div>
+          <div class="cool-metric">
+            <div class="cool-metric-val" style="color:var(--green)">3 Ton</div>
+            <div class="cool-metric-label">Kapasitas</div>
+          </div>
+          <div class="cool-metric">
+            <div class="cool-metric-val" style="color:var(--amber)">72%</div>
+            <div class="cool-metric-label">Load</div>
+          </div>
+        </div>
+        <div class="bar-wrap" style="margin-top:10px"><div class="bar-fill" style="background:linear-gradient(90deg,var(--cyan),#00e5ff);width:72%"></div></div>
+      </div>
+
+      <div class="cool-unit" onclick="alert('AC Unit 2: Unit backup/sekunder. Aktif tapi butuh pembersihan filter. Bekerja lebih ringan dari unit 1.')">
+        <div class="cool-header">
+          <div class="cool-icon"><span class="spin" style="animation-duration:3s">❄️</span></div>
+          <div>
+            <div class="cool-name">AC / CRAC Unit 2</div>
+            <div style="font-size:10px;color:var(--amber)">● Active — Filter Warning</div>
+          </div>
+          <div class="cool-stat"><span class="led led-sm led-a"></span></div>
+        </div>
+        <div class="cool-metrics">
+          <div class="cool-metric">
+            <div class="cool-metric-val" style="color:var(--cyan)">19°C</div>
+            <div class="cool-metric-label">Supply temp</div>
+          </div>
+          <div class="cool-metric">
+            <div class="cool-metric-val" style="color:#ff6b35">27°C</div>
+            <div class="cool-metric-label">Return temp</div>
+          </div>
+          <div class="cool-metric">
+            <div class="cool-metric-val" style="color:var(--green)">3 Ton</div>
+            <div class="cool-metric-label">Kapasitas</div>
+          </div>
+          <div class="cool-metric">
+            <div class="cool-metric-val" style="color:var(--green)">45%</div>
+            <div class="cool-metric-label">Load</div>
+          </div>
+        </div>
+        <div class="bar-wrap" style="margin-top:10px"><div class="bar-fill" style="background:linear-gradient(90deg,var(--cyan),#00e5ff);width:45%"></div></div>
+        <div style="font-size:10px;color:var(--amber);margin-top:6px">⚠️ Filter perlu dibersihkan — jadwalkan maintenance</div>
+      </div>
+    </div>
+
+    <!-- Airflow diagram -->
+    <div class="card">
+      <div class="sec-title" style="margin-bottom:14px">Alur Udara — Hot/Cold Aisle</div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:6px;padding:12px;text-align:center;margin-bottom:8px">
+            <div style="font-size:20px">❄️</div>
+            <div style="font-size:12px;color:#00e5ff;font-weight:600">COLD AISLE</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:4px">Udara dingin 18-20°C<br>masuk dari depan rak</div>
+          </div>
+          <div style="text-align:center;font-size:20px;color:#00e5ff">↓ ↓ ↓</div>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:6px;padding:12px;text-align:center">
+            <div style="font-size:20px">🗄️</div>
+            <div style="font-size:12px;color:var(--purple);font-weight:600">SERVER RACK</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:4px">CPU, RAM, HDD<br>menghasilkan panas</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div style="background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.2);border-radius:6px;padding:12px;text-align:center;margin-bottom:8px">
+            <div style="font-size:20px">🔥</div>
+            <div style="font-size:12px;color:#ff6b35;font-weight:600">HOT AISLE</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:4px">Udara panas 26-30°C<br>keluar dari belakang rak</div>
+          </div>
+          <div style="text-align:center;font-size:20px;color:#ff6b35">↑ ↑ ↑</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text2)">
+        AC mengambil udara panas dari hot aisle → didinginkan → ditiupkan kembali ke cold aisle ♻️
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ TAB: SECURITY ══════ -->
+  <div class="panel" id="tab-security">
+    <div class="sec-title">Physical Security System</div>
+    <div class="sec-grid">
+      <div class="sec-item">
+        <div class="sec-item-header">
+          <div class="sec-item-icon">🔐</div>
+          <div class="sec-item-name">Kartu Akses (RFID)</div>
+          <div class="sec-item-status status-on">Active</div>
+        </div>
+        <div class="sec-detail">
+          Pintu server room dilengkapi reader kartu RFID. Hanya kartu yang terdaftar bisa membuka pintu.
+          Log akses tersimpan otomatis — siapa masuk, jam berapa.
+          Teknisi LEPKOM wajib tap kartu setiap kali masuk/keluar.
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--green)">✓ Pintu terkunci · Last entry: 08:04 · Sulthan</div>
+      </div>
+
+      <div class="sec-item">
+        <div class="sec-item-header">
+          <div class="sec-item-icon">📹</div>
+          <div class="sec-item-name">CCTV</div>
+          <div class="sec-item-status status-on">Recording</div>
+        </div>
+        <div class="sec-detail">
+          Kamera CCTV di sudut ruangan dan di depan rak server. Rekaman disimpan 30 hari.
+          Terhubung ke monitoring room. Resolusi 1080p dengan night vision.
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--green)">✓ 3 kamera aktif · Recording 24/7</div>
+      </div>
+
+      <div class="sec-item">
+        <div class="sec-item-header">
+          <div class="sec-item-icon">🚨</div>
+          <div class="sec-item-name">Smoke & Fire Detector</div>
+          <div class="sec-item-status status-on">Normal</div>
+        </div>
+        <div class="sec-detail">
+          Sensor asap ionisasi terpasang di plafon. Terhubung ke sistem alarm gedung.
+          Jika terdeteksi asap, alarm berbunyi dan pintu darurat terbuka otomatis.
+          Dilengkapi FM-200 suppression system (bukan air — agar tidak merusak server).
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--green)">✓ No smoke detected · Last test: 3 hari lalu</div>
+      </div>
+
+      <div class="sec-item">
+        <div class="sec-item-header">
+          <div class="sec-item-icon">💧</div>
+          <div class="sec-item-name">Water Leak Sensor</div>
+          <div class="sec-item-status status-on">Dry</div>
+        </div>
+        <div class="sec-detail">
+          Sensor kebocoran air di bawah lantai raised floor dan dekat AC unit.
+          AC yang bocor adalah penyebab kerusakan server yang sering terjadi.
+          Alert langsung dikirim ke HP teknisi jika terdeteksi.
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--green)">✓ Dry · 4 sensor aktif</div>
+      </div>
+
+      <div class="sec-item">
+        <div class="sec-item-header">
+          <div class="sec-item-icon">⚡</div>
+          <div class="sec-item-name">Anti-Static & Grounding</div>
+          <div class="sec-item-status status-on">OK</div>
+        </div>
+        <div class="sec-detail">
+          Raised floor anti-static untuk cegah ESD (Electrostatic Discharge) yang bisa merusak komponen.
+          Teknisi wajib pakai wrist strap anti-static saat pegang hardware.
+          Rak server terhubung ke grounding system gedung.
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--green)">✓ Grounding resistance: 0.8Ω (normal &lt;1Ω)</div>
+      </div>
+
+      <div class="sec-item">
+        <div class="sec-item-header">
+          <div class="sec-item-icon">🌡️</div>
+          <div class="sec-item-name">Environment Monitoring</div>
+          <div class="sec-item-status status-on">Monitoring</div>
+        </div>
+        <div class="sec-detail">
+          Sensor suhu dan kelembaban di setiap rak dan corner ruangan.
+          Alert otomatis via email/SMS ke admin jika suhu &gt;27°C atau humidity &gt;60%.
+          Data disimpan untuk analisis tren jangka panjang.
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--amber)">⚠️ Rack B hot aisle 29.1°C — monitor lebih ketat</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ TAB: EVENT LOG ══════ -->
+  <div class="panel" id="tab-log">
+    <div class="sec-title">Event Log — Aktivitas Ruangan Server</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.3)">✅</div>
+        <div class="tl-content">
+          <div class="tl-time">Hari ini · 08:08</div>
+          <div class="tl-desc" style="color:var(--green)">Farrel masuk server room — kartu akses valid. Pengecekan rutin sebelum praktikum.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(0,200,255,0.1);border-color:rgba(0,200,255,0.3)">📊</div>
+        <div class="tl-content">
+          <div class="tl-time">Hari ini · 07:30</div>
+          <div class="tl-desc">Auto-monitoring: AC Unit 2 filter efficiency turun 15%. Rekomendasi: bersihkan filter dalam 7 hari.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.3)">💾</div>
+        <div class="tl-content">
+          <div class="tl-time">Hari ini · 03:00</div>
+          <div class="tl-desc" style="color:var(--green)">Backup otomatis selesai — 3 VM snapshot berhasil. Total size: 48GB. Disimpan ke Backup Server.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(255,179,0,0.1);border-color:rgba(255,179,0,0.3)">⚠️</div>
+        <div class="tl-content">
+          <div class="tl-time">Kemarin · 14:22</div>
+          <div class="tl-desc" style="color:var(--amber)">Rack B suhu hot aisle naik ke 29.1°C selama praktikum Network Intermediate. AC load meningkat otomatis.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.3)">🔧</div>
+        <div class="tl-content">
+          <div class="tl-time">3 hari lalu · 10:00</div>
+          <div class="tl-desc">Maintenance rutin: pengecekan semua koneksi kabel, tightening screw server, cleaning dust filter HP ProLiant.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.3)">🔋</div>
+        <div class="tl-content">
+          <div class="tl-time">1 minggu lalu · 16:30</div>
+          <div class="tl-desc" style="color:var(--green)">UPS battery test berhasil — runtime 47 menit pada 70% load. Baterai dalam kondisi baik.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(255,61,61,0.1);border-color:rgba(255,61,61,0.3)">🔴</div>
+        <div class="tl-content">
+          <div class="tl-time">2 minggu lalu · 09:14</div>
+          <div class="tl-desc" style="color:var(--red)">PLN padam 4 menit — UPS mengambil alih otomatis. Semua server tetap berjalan. Power restored 09:18.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(0,200,255,0.1);border-color:rgba(0,200,255,0.3)">🖥️</div>
+        <div class="tl-content">
+          <div class="tl-time">1 bulan lalu</div>
+          <div class="tl-desc">IBM System x3250 ditambahkan ke rack B. Konfigurasi VLAN dan IP addressing diselesaikan. Integrasi ke hypervisor berhasil.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end app -->
+
+<script>
+// LOADER
+const ldTexts=['Initializing environment systems...','Loading sensor data...','Connecting to rack monitoring...','Calibrating temperature map...','Ready.'];
+let li=0;
+const ldInterval=setInterval(()=>{
+  if(++li<ldTexts.length) document.getElementById('ldTxt').textContent=ldTexts[li];
+  else clearInterval(ldInterval);
+},400);
+setTimeout(()=>{document.getElementById('loader').classList.add('out')},2200);
+
+// TABS
+function setTab(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    const ids=['overview','floorplan','environment','power','cooling','security','log'];
+    t.classList.toggle('active',ids[i]===id);
+  });
+  document.querySelectorAll('.panel').forEach(p=>{
+    p.classList.toggle('active',p.id==='tab-'+id);
+  });
+}
+
+// RACK DETAIL
+const rackData={
+  A:{name:'RACK A — HP ProLiant',body:'<b>Isi:</b> 3x HP ProLiant (Web/App server, Database server, VM hypervisor)<br><b>Suhu:</b> Front 21.4°C · Rear 27.5°C<br><b>Status:</b> <span style="color:#00ff88">● Semua normal</span><br><b>Catatan:</b> Server utama untuk praktikum Network & Database.'},
+  B:{name:'RACK B — HP + IBM Mixed',body:'<b>Isi:</b> 1x HP ProLiant + 2x IBM System x3250<br><b>Suhu:</b> Front 22.1°C · Rear 29.1°C ⚠️<br><b>Status:</b> <span style="color:#ffb300">● Perhatikan hot aisle</span><br><b>Catatan:</b> Beban tinggi saat praktikum Network Intermediate berlangsung.'},
+  C:{name:'RACK C — IBM System',body:'<b>Isi:</b> 1x IBM System x3550 + storage NAS<br><b>Suhu:</b> Front 21.8°C · Rear 26.8°C<br><b>Status:</b> <span style="color:#00ff88">● Normal</span><br><b>Catatan:</b> Digunakan untuk workload storage dan backup.'},
+  D:{name:'RACK D — Network Equipment',body:'<b>Isi:</b> Core Switch, Access Switch, Router MikroTik, Patch Panel, KVM Switch<br><b>Suhu:</b> Front 21.0°C · Rear 25.4°C<br><b>Status:</b> <span style="color:#00ff88">● Normal</span><br><b>Catatan:</b> Rak jaringan — semua koneksi lab melewati rak ini.'},
+};
+function showRackDetail(id){
+  const d=document.getElementById('rack-detail');
+  const r=rackData[id];
+  document.getElementById('rack-detail-title').textContent=r.name;
+  document.getElementById('rack-detail-body').innerHTML=r.body;
+  d.style.display='block';
+}
+
+// TEMP ALERT
+function tempAlert(zone,temp,note){
+  alert('📍 '+zone+'\n🌡️ Suhu: '+temp+'\n\n'+note);
+}
+
+// LIVE METRICS (subtle fluctuation)
+setInterval(()=>{
+  const t=(22+Math.random()*.8-.2).toFixed(1);
+  const h=(51+Math.random()*2-1).toFixed(0);
+  const el1=document.getElementById('ov-temp');
+  const el2=document.getElementById('ov-hum');
+  if(el1)el1.textContent=t+'°C';
+  if(el2)el2.textContent=h+'%';
+},4000);
+
+// sendPrompt fallback
+if(typeof sendPrompt==='undefined'){
+  window.sendPrompt=function(t){alert('💬 '+t)};
+}
+</script>
+</body>
+</html>
