@@ -869,9 +869,6 @@ body::before {
 }
 .footer-note span { color:var(--accent-cyan); }
 
-/* ═══════════════════════════════════════════════
-   GLOW PULSE on hover for whole sections
-═══════════════════════════════════════════════ */
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
 /* Scrollbar */
@@ -937,19 +934,19 @@ body::before {
           <span class="cat-title">Jaringan</span>
         </div>
         <div class="cat-items">
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang DNS Server')">
+          <div class="type-item" onclick="sendPrompt('DNS Server adalah server yang berfungsi untuk menerjemahkan nama domain seperti `google.com` menjadi alamat IP agar perangkat dapat terhubung ke server tujuan. DNS membantu pengguna mengakses website atau layanan jaringan dengan lebih mudah tanpa harus menghafal angka IP Address, sehingga proses komunikasi di internet maupun jaringan internal menjadi lebih cepat, praktis, dan efisien.')">
             <div class="item-name"><span class="led led-sm led-g"></span>DNS Server</div>
             <div class="item-desc">Terjemahkan domain ke IP</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang DHCP Server')">
+          <div class="type-item" onclick="sendPrompt('DHCP Server (Dynamic Host Configuration Protocol Server) adalah server yang berfungsi untuk memberikan konfigurasi jaringan secara otomatis kepada perangkat yang terhubung ke jaringan, seperti alamat IP, subnet mask, gateway, dan DNS Server. Dengan DHCP, administrator jaringan tidak perlu mengatur IP Address secara manual pada setiap perangkat, sehingga proses koneksi menjadi lebih cepat, efisien, dan mengurangi risiko terjadinya konflik IP dalam jaringan.')">
             <div class="item-name"><span class="led led-sm led-g"></span>DHCP Server</div>
             <div class="item-desc">Distribusi IP otomatis</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Proxy Server')">
+          <div class="type-item" onclick="sendPrompt('Proxy Server adalah server yang berfungsi sebagai perantara antara perangkat pengguna dan internet atau jaringan lain. Saat pengguna mengakses sebuah website atau layanan, permintaan akan melewati Proxy Server terlebih dahulu sebelum diteruskan ke tujuan. Proxy digunakan untuk meningkatkan keamanan jaringan, menyembunyikan alamat IP pengguna, mengatur akses internet, melakukan filtering konten, serta membantu mempercepat akses melalui sistem cache data.')">
             <div class="item-name"><span class="led led-sm led-a"></span>Proxy Server</div>
             <div class="item-desc">Perantara akses internet</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang VPN Server')">
+          <div class="type-item" onclick="sendPrompt('VPN Server (Virtual Private Network Server) adalah server yang digunakan untuk membuat koneksi jaringan yang aman dan terenkripsi antara perangkat pengguna dengan jaringan tujuan melalui internet. VPN membantu melindungi data dari penyadapan, menyembunyikan identitas atau alamat IP pengguna, serta memungkinkan akses jarak jauh ke jaringan internal perusahaan secara aman. Teknologi ini sering digunakan untuk keamanan komunikasi, akses remote kerja, dan perlindungan privasi saat menggunakan internet.')">
             <div class="item-name"><span class="led led-sm led-g"></span>VPN Server</div>
             <div class="item-desc">Koneksi privat &amp; aman</div>
           </div>
@@ -963,19 +960,19 @@ body::before {
           <span class="cat-title">Aplikasi &amp; Web</span>
         </div>
         <div class="cat-items">
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Web Server seperti Apache dan Nginx')">
+          <div class="type-item" onclick="sendPrompt('Web Server seperti Apache dan Nginx adalah server yang berfungsi untuk menerima, mengelola, dan menampilkan halaman website kepada pengguna melalui browser. Web Server memproses permintaan dari client kemudian mengirimkan file website seperti HTML, CSS, JavaScript, gambar, maupun data aplikasi agar dapat ditampilkan dengan baik. Apache dikenal fleksibel dan banyak digunakan untuk website berbasis PHP, sedangkan Nginx unggul dalam performa tinggi, manajemen traffic besar, serta efisiensi penggunaan resource server.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Web Server</div>
             <div class="item-desc">Host website &amp; aplikasi</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Application Server')">
+          <div class="type-item" onclick="sendPrompt('Application Server adalah server yang berfungsi untuk menjalankan logika aplikasi dan memproses data sebelum ditampilkan kepada pengguna. Server ini menjadi penghubung antara database, web server, dan aplikasi sehingga berbagai fitur seperti login, transaksi, pengolahan data, API, dan sistem backend dapat berjalan dengan baik. Application Server biasanya digunakan pada aplikasi web, sistem perusahaan, dan layanan berbasis client-server.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Application Server</div>
             <div class="item-desc">Logika bisnis aplikasi</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Mail Server')">
+          <div class="type-item" onclick="sendPrompt('Mail Server adalah server yang digunakan untuk mengirim, menerima, menyimpan, dan mengelola email dalam suatu jaringan atau layanan internet. Mail Server bekerja menggunakan protokol seperti SMTP untuk pengiriman email serta POP3 atau IMAP untuk menerima email. Server ini memungkinkan komunikasi email berjalan secara terstruktur, aman, dan dapat diakses oleh banyak pengguna dalam jaringan perusahaan maupun layanan publik.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Mail Server</div>
             <div class="item-desc">Kelola email organisasi</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang FTP Server')">
+          <div class="type-item" onclick="sendPrompt('FTP Server (File Transfer Protocol Server) adalah server yang berfungsi untuk mengirim, menerima, dan mengelola file melalui jaringan atau internet menggunakan protokol FTP. FTP Server biasanya digunakan untuk proses upload dan download file antara client dan server, seperti pengelolaan website, backup data, distribusi file, atau pertukaran dokumen dalam jaringan perusahaan. Dengan FTP Server, proses transfer file menjadi lebih mudah, cepat, dan terorganisir.')">
             <div class="item-name"><span class="led led-sm led-a"></span>FTP Server</div>
             <div class="item-desc">Transfer file via jaringan</div>
           </div>
@@ -989,19 +986,19 @@ body::before {
           <span class="cat-title">Data &amp; Storage</span>
         </div>
         <div class="cat-items">
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Database Server MySQL dan SQL Server')">
+          <div class="type-item" onclick="sendPrompt('Database Server seperti MySQL dan SQL Server adalah server yang digunakan untuk menyimpan, mengelola, dan memproses data dalam jumlah besar secara terstruktur menggunakan sistem basis data. MySQL banyak digunakan pada website dan aplikasi berbasis open-source karena ringan dan fleksibel, sedangkan SQL Server dari Microsoft lebih sering digunakan pada sistem perusahaan karena memiliki fitur manajemen, keamanan, dan integrasi yang lebih lengkap. Database Server berperan penting dalam menyimpan data pengguna, transaksi, log aktivitas, hingga informasi aplikasi agar dapat diakses dan dikelola dengan cepat serta aman.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Database Server</div>
             <div class="item-desc">MySQL, SQL Server</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang File Server')">
+          <div class="type-item" onclick="sendPrompt('File Server adalah server yang berfungsi sebagai pusat penyimpanan dan pengelolaan file dalam jaringan sehingga banyak pengguna dapat mengakses, menyimpan, berbagi, dan mengatur data secara terpusat. File Server biasanya digunakan di perusahaan, sekolah, atau data center untuk mempermudah manajemen dokumen, menjaga keamanan data, serta meningkatkan efisiensi kolaborasi antar pengguna dalam satu jaringan.')">
             <div class="item-name"><span class="led led-sm led-g"></span>File Server</div>
             <div class="item-desc">Penyimpanan file bersama</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Backup Server')">
+          <div class="type-item" onclick="sendPrompt('Backup Server adalah server yang digunakan untuk menyimpan salinan data dari server utama atau perangkat lain sebagai perlindungan apabila terjadi kerusakan, kehilangan data, serangan malware, atau kegagalan sistem. Backup Server membantu proses pemulihan data agar operasional sistem tetap berjalan dan meminimalkan risiko kehilangan informasi penting dalam jaringan maupun infrastruktur perusahaan.')">
             <div class="item-name"><span class="led led-sm led-a"></span>Backup Server</div>
             <div class="item-desc">Cadangan data otomatis</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan perbedaan NAS dan SAN')">
+          <div class="type-item" onclick="sendPrompt('NAS (Network Attached Storage) dan SAN (Storage Area Network) sama-sama digunakan sebagai sistem penyimpanan data dalam jaringan, namun memiliki fungsi dan cara kerja yang berbeda. NAS merupakan perangkat penyimpanan yang terhubung langsung ke jaringan dan digunakan untuk berbagi file antar pengguna dengan pengelolaan yang lebih sederhana serta biaya yang lebih terjangkau. Sedangkan SAN adalah jaringan penyimpanan khusus berkecepatan tinggi yang menghubungkan server dengan storage secara langsung untuk kebutuhan performa tinggi, kapasitas besar, dan akses data yang lebih cepat, biasanya digunakan pada data center atau sistem enterprise berskala besar.')">
             <div class="item-name"><span class="led led-sm led-g"></span>NAS / SAN</div>
             <div class="item-desc">Network storage skala besar</div>
           </div>
@@ -1015,19 +1012,19 @@ body::before {
           <span class="cat-title">Akses &amp; Keamanan</span>
         </div>
         <div class="cat-items">
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Authentication Server dan Active Directory')">
+          <div class="type-item" onclick="sendPrompt('Authentication Server dan Active Directory adalah sistem yang digunakan untuk mengelola identitas pengguna, proses login, serta hak akses dalam sebuah jaringan. Authentication Server berfungsi memverifikasi username dan password agar hanya pengguna yang memiliki izin yang dapat mengakses sistem atau layanan tertentu. Active Directory dari Microsoft digunakan untuk mengelola user, komputer, grup, dan kebijakan keamanan secara terpusat dalam jaringan perusahaan, sehingga administrator dapat mengatur akses, keamanan, dan konfigurasi perangkat dengan lebih mudah dan terorganisir.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Auth Server</div>
             <div class="item-desc">Active Directory, login</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Firewall Server')">
+          <div class="type-item" onclick="sendPrompt('Firewall Server adalah server yang berfungsi untuk melindungi jaringan dari akses tidak sah, serangan siber, maupun lalu lintas data yang berbahaya dengan cara memfilter dan mengontrol koneksi jaringan masuk dan keluar. Firewall membantu menjaga keamanan sistem dengan menentukan aturan akses tertentu, memblokir ancaman, serta memantau aktivitas jaringan agar infrastruktur server dan data tetap aman dari gangguan eksternal maupun internal.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Firewall Server</div>
             <div class="item-desc">Filter lalu lintas jaringan</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Print Server')">
+          <div class="type-item" onclick="sendPrompt('Print Server adalah server yang digunakan untuk mengelola proses pencetakan dalam jaringan sehingga banyak pengguna dapat menggunakan printer secara bersama-sama melalui satu sistem terpusat. Print Server membantu mengatur antrean cetak, hak akses pengguna, pemantauan penggunaan printer, serta meningkatkan efisiensi pengelolaan perangkat cetak di lingkungan kantor, sekolah, maupun perusahaan.')">
             <div class="item-name"><span class="led led-sm led-a"></span>Print Server</div>
             <div class="item-desc">Berbagi printer di jaringan</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Monitoring Server seperti Zabbix atau Nagios')">
+          <div class="type-item" onclick="sendPrompt('Monitoring Server seperti Zabbix atau Nagios adalah server yang digunakan untuk memantau kondisi jaringan, server, perangkat, dan layanan secara real-time agar administrator dapat mengetahui performa sistem serta mendeteksi gangguan lebih cepat. Monitoring Server dapat menampilkan penggunaan CPU, RAM, storage, traffic jaringan, status perangkat, hingga notifikasi otomatis ketika terjadi masalah, sehingga membantu menjaga kestabilan dan ketersediaan infrastruktur IT.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Monitoring Server</div>
             <div class="item-desc">Pantau sistem &amp; jaringan</div>
           </div>
@@ -1041,19 +1038,19 @@ body::before {
           <span class="cat-title">Virtualisasi</span>
         </div>
         <div class="cat-items">
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Virtualization Server seperti Proxmox dan VMware')">
+          <div class="type-item" onclick="sendPrompt('Virtualization Server seperti Proxmox dan VMware adalah server yang digunakan untuk menjalankan beberapa sistem operasi atau virtual machine dalam satu perangkat fisik menggunakan teknologi virtualisasi. Dengan virtualisasi, satu server dapat dibagi menjadi banyak server virtual yang memiliki fungsi dan resource masing-masing sehingga penggunaan hardware menjadi lebih efisien, fleksibel, dan mudah dikelola. Proxmox dikenal sebagai platform virtualisasi berbasis open-source yang mendukung VM dan container, sedangkan VMware banyak digunakan pada lingkungan enterprise karena stabilitas, fitur manajemen, dan performanya yang tinggi.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Virtualization Server</div>
             <div class="item-desc">VMware, Proxmox, VirtualBox</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Terminal Server dan Thin Client')">
+          <div class="type-item" onclick="sendPrompt('Terminal Server dan Thin Client adalah sistem yang memungkinkan banyak pengguna mengakses aplikasi atau desktop dari satu server pusat melalui jaringan. Terminal Server menjalankan seluruh proses aplikasi dan pengolahan data di server, sementara Thin Client hanya berfungsi sebagai perangkat akses dengan spesifikasi ringan tanpa banyak proses lokal. Sistem ini membantu mengurangi biaya perangkat, mempermudah manajemen, meningkatkan keamanan data, serta sering digunakan di sekolah, kantor, laboratorium komputer, dan perusahaan besar.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Terminal Server</div>
             <div class="item-desc">Thin client, RDS, Citrix</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Cloud Server AWS GCP Azure')">
+          <div class="type-item" onclick="sendPrompt('Cloud Server seperti AWS, GCP, dan Azure adalah layanan server berbasis cloud computing yang memungkinkan pengguna menjalankan aplikasi, penyimpanan, database, dan infrastruktur IT melalui internet tanpa harus memiliki server fisik sendiri. AWS dari Amazon, GCP dari Google, dan Azure dari Microsoft menyediakan layanan cloud yang fleksibel, scalable, dan dapat diakses secara global untuk kebutuhan website, aplikasi, backup, artificial intelligence, hingga data center modern. Cloud Server membantu perusahaan meningkatkan efisiensi, skalabilitas, dan ketersediaan layanan dengan sistem yang lebih praktis dan terintegrasi.')">
             <div class="item-name"><span class="led led-sm led-a"></span>Cloud Server</div>
             <div class="item-desc">AWS, GCP, Azure</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Apa itu Container Server dan Docker?')">
+          <div class="type-item" onclick="sendPrompt('Container Server dan Docker adalah teknologi yang digunakan untuk menjalankan aplikasi dalam lingkungan terisolasi yang disebut container. Container memungkinkan aplikasi beserta seluruh dependency dan konfigurasi berjalan secara konsisten di berbagai sistem tanpa konflik lingkungan. Docker merupakan platform container paling populer yang digunakan untuk membuat, menjalankan, dan mengelola container dengan lebih mudah dan ringan dibanding virtual machine. Teknologi ini banyak digunakan dalam pengembangan aplikasi modern, deployment server, microservices, dan sistem cloud karena cepat, efisien, serta mudah dipindahkan antar server.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Container Server</div>
             <div class="item-desc">Docker, Kubernetes</div>
           </div>
@@ -1067,19 +1064,19 @@ body::before {
           <span class="cat-title">Khusus</span>
         </div>
         <div class="cat-items">
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Game Server dan infrastrukturnya')">
+          <div class="type-item" onclick="sendPrompt('Game Server adalah server yang digunakan untuk menjalankan, mengelola, dan menghubungkan pemain dalam sebuah permainan online secara real-time. Server ini bertugas memproses data permainan seperti posisi pemain, skor, item, komunikasi, dan sinkronisasi gameplay agar semua pemain dapat bermain secara stabil dan bersamaan. Infrastruktur Game Server biasanya terdiri dari beberapa komponen seperti database server, authentication server, matchmaking server, anti-cheat system, load balancer, dan network server untuk menjaga performa, keamanan, serta kestabilan koneksi ketika jumlah pemain tinggi. Infrastruktur ini sangat penting agar game online dapat berjalan dengan latency rendah, minim lag, dan mampu menangani banyak pengguna secara bersamaan.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Game Server</div>
             <div class="item-desc">Sesi multiplayer online</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Streaming Server')">
+          <div class="type-item" onclick="sendPrompt('Streaming Server adalah server yang digunakan untuk mengirimkan data audio atau video secara langsung melalui jaringan atau internet sehingga pengguna dapat menonton atau mendengarkan konten tanpa harus mengunduh file sepenuhnya terlebih dahulu. Streaming Server mendukung layanan seperti live streaming, video on demand, siaran online, webinar, dan platform hiburan digital dengan mengatur distribusi data secara real-time agar kualitas tayangan tetap stabil dan responsif sesuai kecepatan jaringan pengguna.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Streaming Server</div>
             <div class="item-desc">Video &amp; audio on demand</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Jelaskan lebih detail tentang Media Server')">
+          <div class="type-item" onclick="sendPrompt('Media Server adalah server yang berfungsi untuk menyimpan, mengelola, dan mendistribusikan file media seperti video, musik, gambar, dan konten multimedia lainnya kepada pengguna dalam jaringan. Media Server biasanya digunakan pada layanan hiburan, smart TV, perusahaan, maupun sistem penyimpanan pribadi untuk mempermudah akses dan streaming konten multimedia secara terpusat. Server ini juga dapat mendukung transcoding, manajemen library media, dan akses multi-user dalam satu sistem jaringan.')">
             <div class="item-name"><span class="led led-sm led-a"></span>Media Server</div>
             <div class="item-desc">Distribusi konten media</div>
           </div>
-          <div class="type-item" onclick="sendPrompt('Apa itu DNS Resolver dan Cache Server?')">
+          <div class="type-item" onclick="sendPrompt('DNS Resolver dan Cache Server adalah sistem yang membantu mempercepat proses pencarian alamat domain di jaringan atau internet. DNS Resolver bertugas menerima permintaan domain dari pengguna lalu mencari alamat IP yang sesuai dengan menghubungi DNS Server lain apabila data belum tersedia. Sedangkan Cache Server menyimpan hasil pencarian DNS yang pernah dilakukan sehingga permintaan berikutnya dapat diproses lebih cepat tanpa harus mencari ulang ke internet. Penggunaan DNS Resolver dan Cache Server membantu meningkatkan kecepatan akses website, mengurangi traffic jaringan, serta meningkatkan efisiensi sistem DNS secara keseluruhan.')">
             <div class="item-name"><span class="led led-sm led-g"></span>Cache Server</div>
             <div class="item-desc">Percepat akses konten</div>
           </div>
@@ -1092,15 +1089,15 @@ body::before {
     <div class="highlight-box">
       <div class="highlight-title">⭐ &nbsp; Paling relevan untuk Network Engineer</div>
       <div class="highlight-grid">
-        <div class="highlight-item hl-cyan" onclick="sendPrompt('Jelaskan cara kerja DNS dan DHCP Server untuk infrastruktur jaringan perusahaan')">
+        <div class="highlight-item hl-cyan" onclick="sendPrompt('DNS dan DHCP Server dalam infrastruktur jaringan perusahaan bekerja saling terhubung untuk mempermudah komunikasi dan pengelolaan perangkat dalam jaringan. DHCP Server akan memberikan konfigurasi jaringan secara otomatis kepada setiap perangkat yang terhubung, seperti IP Address, subnet mask, gateway, dan alamat DNS Server. Setelah perangkat mendapatkan konfigurasi jaringan, DNS Server akan membantu menerjemahkan nama domain atau hostname menjadi alamat IP agar perangkat dapat saling berkomunikasi dan mengakses layanan jaringan dengan mudah. Dalam lingkungan perusahaan, kombinasi DNS dan DHCP membantu administrator mengelola ratusan hingga ribuan perangkat secara efisien, mengurangi konfigurasi manual, serta menjaga kestabilan jaringan.')">
           <div class="hl-name">DNS + DHCP</div>
           <div class="hl-desc">Fondasi setiap jaringan</div>
         </div>
-        <div class="highlight-item hl-purple" onclick="sendPrompt('Jelaskan cara kerja Active Directory Authentication Server untuk Network Engineer')">
+        <div class="highlight-item hl-purple" onclick="sendPrompt('Active Directory Authentication Server bekerja sebagai pusat manajemen identitas dan autentikasi dalam jaringan perusahaan. Ketika pengguna login ke komputer atau sistem jaringan, perangkat akan mengirimkan data login ke Active Directory Server untuk diverifikasi. Jika username dan password sesuai, server akan memberikan hak akses sesuai kebijakan yang telah ditentukan administrator, seperti akses folder, printer, aplikasi, atau server tertentu. Bagi Network Engineer, Active Directory sangat membantu dalam pengelolaan user, komputer, group policy, keamanan jaringan, monitoring akses pengguna, serta integrasi berbagai layanan jaringan secara terpusat sehingga infrastruktur menjadi lebih aman dan mudah dikontrol.')">
           <div class="hl-name">Auth Server</div>
           <div class="hl-desc">Active Directory</div>
         </div>
-        <div class="highlight-item hl-amber" onclick="sendPrompt('Jelaskan cara kerja Virtualization Server Proxmox untuk infrastruktur jaringan')">
+        <div class="highlight-item hl-amber" onclick="sendPrompt('Virtualization Server seperti Proxmox bekerja dengan membagi satu server fisik menjadi beberapa virtual machine atau container yang dapat menjalankan sistem operasi dan layanan berbeda secara bersamaan. Dalam infrastruktur jaringan perusahaan, Proxmox memungkinkan administrator menjalankan berbagai server seperti DNS Server, Database Server, Web Server, Firewall, maupun Monitoring Server dalam satu perangkat fisik untuk menghemat resource, biaya, dan ruang perangkat. Proxmox juga menyediakan fitur manajemen virtual machine, backup, snapshot, clustering, dan monitoring sehingga proses pengelolaan infrastruktur server menjadi lebih fleksibel, scalable, dan efisien untuk kebutuhan data center maupun jaringan enterprise.')">
           <div class="hl-name">Virtualization</div>
           <div class="hl-desc">Proxmox / VMware</div>
         </div>
@@ -1123,7 +1120,7 @@ body::before {
         <!-- 1U: Firewall -->
         <div class="rack-unit-row">
           <div class="rack-u-label">1U</div>
-          <div class="rack-device dev-firewall" onclick="sendPrompt('Jelaskan fungsi Firewall dalam rak server')">
+          <div class="rack-device dev-firewall" onclick="sendPrompt('Firewall dalam rak server berfungsi sebagai sistem keamanan jaringan yang mengontrol dan memfilter lalu lintas data masuk maupun keluar dari jaringan perusahaan atau data center. Firewall membantu melindungi server dari akses tidak sah, serangan siber, malware, dan ancaman jaringan lainnya dengan menerapkan aturan keamanan tertentu agar infrastruktur tetap aman dan stabil.')">
             <div class="dev-name">Firewall</div>
             <div class="dev-sub">Fortinet / ASA</div>
             <div class="dev-leds">
@@ -1137,7 +1134,7 @@ body::before {
         <!-- 2U: Core Switch -->
         <div class="rack-unit-row">
           <div class="rack-u-label">2U</div>
-          <div class="rack-device dev-switch" onclick="sendPrompt('Jelaskan fungsi Core Switch dalam rak server')">
+          <div class="rack-device dev-switch" onclick="sendPrompt('Core Switch dalam rak server berfungsi sebagai pusat distribusi utama lalu lintas jaringan yang menghubungkan berbagai switch, server, router, dan perangkat jaringan lainnya dalam infrastruktur data center atau perusahaan. Core Switch dirancang untuk menangani traffic jaringan berkecepatan tinggi dengan kapasitas besar agar komunikasi antar perangkat dan server tetap cepat serta stabil.')">
             <div class="dev-name">Core Switch</div>
             <div class="dev-sub">24 port GbE</div>
             <div class="dev-leds">
@@ -1150,7 +1147,7 @@ body::before {
         <!-- 3U: Access Switch -->
         <div class="rack-unit-row">
           <div class="rack-u-label">3U</div>
-          <div class="rack-device dev-switch" onclick="sendPrompt('Apa bedanya Core Switch dan Access Switch?')">
+          <div class="rack-device dev-switch" onclick="sendPrompt('Perbedaan Core Switch dan Access Switch terletak pada fungsi dan posisinya dalam jaringan. Core Switch digunakan sebagai pusat utama distribusi traffic jaringan dengan performa tinggi untuk menghubungkan backbone jaringan, sedangkan Access Switch digunakan untuk menghubungkan perangkat pengguna seperti komputer, printer, access point, atau IP phone ke jaringan utama. Core Switch fokus pada kapasitas dan kecepatan besar, sementara Access Switch fokus pada koneksi perangkat endpoint.')">
             <div class="dev-name">Access Switch</div>
             <div class="dev-sub">48 port PoE</div>
             <div class="dev-leds">
@@ -1163,7 +1160,7 @@ body::before {
         <!-- 4U: Router -->
         <div class="rack-unit-row">
           <div class="rack-u-label">4U</div>
-          <div class="rack-device dev-router" onclick="sendPrompt('Jelaskan fungsi Router dalam rak server')">
+          <div class="rack-device dev-router" onclick="sendPrompt('Router dalam rak server berfungsi untuk menghubungkan jaringan yang berbeda serta mengatur jalur lalu lintas data antar jaringan maupun internet. Router menentukan rute terbaik untuk pengiriman data, menghubungkan jaringan internal dengan internet, serta membantu pengelolaan komunikasi antar cabang, VLAN, atau infrastruktur jaringan lainnya.')">
             <div class="dev-name">Router</div>
             <div class="dev-sub">MikroTik / Cisco ISR</div>
             <div class="dev-leds">
@@ -1176,7 +1173,7 @@ body::before {
         <!-- 5U: Patch Panel -->
         <div class="rack-unit-row">
           <div class="rack-u-label">5U</div>
-          <div class="rack-device dev-patch" onclick="sendPrompt('Jelaskan fungsi Patch Panel dalam rak server')">
+          <div class="rack-device dev-patch" onclick="sendPrompt('Patch Panel dalam rak server berfungsi sebagai pusat terminasi dan pengelolaan kabel jaringan agar koneksi antar perangkat menjadi lebih rapi, terstruktur, dan mudah dikelola. Patch Panel membantu teknisi melakukan troubleshooting, pemindahan koneksi, dan maintenance jaringan tanpa harus langsung mengubah kabel utama pada perangkat aktif.')">
             <div style="flex:1">
               <div class="dev-name">Patch Panel</div>
               <div class="port-dots">
@@ -1194,7 +1191,7 @@ body::before {
         <!-- 6U: Cable Management -->
         <div class="rack-unit-row">
           <div class="rack-u-label">6U</div>
-          <div class="rack-device dev-cable-mgmt" onclick="sendPrompt('Apa fungsi Cable Management di rak server?')">
+          <div class="rack-device dev-cable-mgmt" onclick="sendPrompt('Cable Management di rak server berfungsi untuk mengatur dan merapikan jalur kabel agar tidak berantakan, mempermudah perawatan, meningkatkan sirkulasi udara, serta mengurangi risiko kabel rusak atau salah koneksi. Pengelolaan kabel yang baik juga membantu proses identifikasi dan troubleshooting perangkat jaringan menjadi lebih efisien.')">
             <div class="dev-name">— Cable Management —</div>
           </div>
         </div>
@@ -1202,7 +1199,7 @@ body::before {
         <!-- 7-8U: Server 1 (2U) -->
         <div class="rack-unit-2u">
           <div class="rack-u-label-2u"><span>7U</span><span>8U</span></div>
-          <div class="rack-device-2u dev-server" onclick="sendPrompt('Jelaskan fungsi server 1U dan 2U dalam data center')">
+          <div class="rack-device-2u dev-server" onclick="sendPrompt('Server 1U dan 2U dalam data center adalah jenis server rackmount berdasarkan ukuran tinggi rack unit. Server 1U memiliki ukuran lebih kecil dan hemat ruang sehingga cocok untuk kebutuhan server dalam jumlah banyak, sedangkan server 2U memiliki ruang lebih besar untuk tambahan storage, pendingin, atau komponen performa tinggi. Pemilihan ukuran server biasanya disesuaikan dengan kebutuhan kapasitas, performa, dan efisiensi ruang di data center.')">
             <div style="display:flex;justify-content:space-between;align-items:center">
               <div>
                 <div class="dev-name">Server 1 — 2U</div>
@@ -1225,7 +1222,7 @@ body::before {
         <!-- 9-10U: Server 2 (2U) -->
         <div class="rack-unit-2u">
           <div class="rack-u-label-2u"><span>9U</span><span>10U</span></div>
-          <div class="rack-device-2u dev-server" onclick="sendPrompt('Apa itu Database Server dan bagaimana cara kerjanya?')">
+          <div class="rack-device-2u dev-server" onclick="sendPrompt('Database Server adalah server yang digunakan untuk menyimpan, mengelola, dan memproses data secara terstruktur menggunakan sistem basis data seperti MySQL atau SQL Server. Cara kerjanya yaitu menerima permintaan data dari aplikasi atau pengguna, memproses query, lalu mengirimkan hasil data yang dibutuhkan dengan cepat dan terorganisir sehingga aplikasi dapat berjalan dengan baik.')">
             <div style="display:flex;justify-content:space-between;align-items:center">
               <div>
                 <div class="dev-name">Server 2 — 2U</div>
@@ -1248,7 +1245,7 @@ body::before {
         <!-- 11U: KVM -->
         <div class="rack-unit-row">
           <div class="rack-u-label">11U</div>
-          <div class="rack-device dev-kvm" onclick="sendPrompt('Apa fungsi KVM Switch di data center?')">
+          <div class="rack-device dev-kvm" onclick="sendPrompt('KVM Switch (Keyboard, Video, Mouse Switch) di data center berfungsi untuk mengontrol banyak server menggunakan satu keyboard, monitor, dan mouse saja. Dengan KVM Switch, administrator dapat berpindah antar server dengan mudah tanpa harus menggunakan perangkat input terpisah untuk setiap server sehingga pengelolaan server menjadi lebih praktis dan efisien.')">
             <div class="dev-name">KVM Switch</div>
             <div class="dev-sub">1 keyboard → N server</div>
             <div class="dev-leds"><span class="led led-sm led-g"></span></div>
@@ -1258,7 +1255,7 @@ body::before {
         <!-- 12U: Console -->
         <div class="rack-unit-row">
           <div class="rack-u-label">12U</div>
-          <div class="rack-device dev-kvm" onclick="sendPrompt('Apa itu Console Server dan Out-of-Band Management seperti iDRAC?')">
+          <div class="rack-device dev-kvm" onclick="sendPrompt('Console Server dan Out-of-Band Management seperti iDRAC digunakan untuk mengelola dan memantau server dari jarak jauh meskipun sistem operasi server sedang mati atau mengalami gangguan. Console Server menyediakan akses terminal ke perangkat jaringan dan server, sedangkan iDRAC dari Dell memungkinkan administrator melakukan monitoring hardware, remote control, reboot server, hingga instalasi sistem operasi melalui jaringan management khusus.')">
             <div class="dev-name">Console Server</div>
             <div class="dev-sub">Out-of-band / iDRAC</div>
             <div class="dev-leds"><span class="led led-sm led-g"></span></div>
@@ -1268,7 +1265,7 @@ body::before {
         <!-- 13U: NAS -->
         <div class="rack-unit-row">
           <div class="rack-u-label">13U</div>
-          <div class="rack-device dev-nas" onclick="sendPrompt('Jelaskan perbedaan NAS dan SAN dalam infrastruktur server')">
+          <div class="rack-device dev-nas" onclick="sendPrompt('NAS (Network Attached Storage) adalah sistem penyimpanan berbasis jaringan yang digunakan untuk berbagi file antar pengguna dengan pengelolaan sederhana dan biaya lebih terjangkau. Sedangkan SAN (Storage Area Network) adalah jaringan penyimpanan khusus berkecepatan tinggi yang menghubungkan server dengan storage secara langsung untuk kebutuhan performa besar, latency rendah, dan kapasitas enterprise. NAS lebih fokus pada file sharing, sementara SAN fokus pada performa storage tingkat tinggi untuk server dan data center.')">
             <div class="dev-name">NAS Storage</div>
             <div class="dev-sub">Network Attached Storage</div>
             <div class="dev-leds"><span class="led led-sm led-g"></span></div>
@@ -1288,7 +1285,7 @@ body::before {
         <!-- 16-18U: UPS (3U) -->
         <div class="rack-unit-2u" style="height:60px">
           <div class="rack-u-label-2u"><span>16U</span><span>17U</span><span style="font-size:6px">18U</span></div>
-          <div class="rack-device-2u dev-ups" onclick="sendPrompt('Mengapa UPS sangat penting di rak server?')">
+          <div class="rack-device-2u dev-ups" onclick="sendPrompt('UPS (Uninterruptible Power Supply) sangat penting di rak server karena berfungsi menyediakan daya cadangan sementara ketika listrik utama mati atau tidak stabil. UPS membantu menjaga server tetap menyala, melindungi perangkat dari kerusakan akibat listrik padam mendadak, lonjakan tegangan, serta memberikan waktu bagi administrator untuk melakukan shutdown sistem secara aman.')">
             <div style="display:flex;justify-content:space-between;align-items:center">
               <div>
                 <div class="dev-name">UPS — 3U</div>
@@ -1304,7 +1301,7 @@ body::before {
         <!-- 19-20U: PDU -->
         <div class="rack-unit-2u">
           <div class="rack-u-label-2u"><span>19U</span><span>20U</span></div>
-          <div class="rack-device-2u dev-pdu" onclick="sendPrompt('Apa fungsi PDU Power Distribution Unit di rak server?')">
+          <div class="rack-device-2u dev-pdu" onclick="sendPrompt('PDU (Power Distribution Unit) di rak server berfungsi untuk mendistribusikan daya listrik ke seluruh perangkat dalam rack seperti server, switch, storage, dan perangkat jaringan lainnya. PDU membantu pengelolaan sumber daya listrik menjadi lebih terorganisir, aman, serta mempermudah monitoring penggunaan daya pada infrastruktur data center atau server room.')">
             <div class="dev-name">PDU — 2U</div>
             <div class="dev-sub">Power Distribution Unit</div>
             <div style="display:flex;gap:4px;margin-top:4px">
@@ -1330,47 +1327,47 @@ body::before {
 
       <!-- CALLOUT LABELS -->
       <div class="rack-labels">
-        <div class="rack-label-item" onclick="sendPrompt('Jelaskan fungsi Firewall dalam rak server')">
+        <div class="rack-label-item" onclick="sendPrompt('Firewall dalam rak server berfungsi sebagai sistem keamanan jaringan yang mengontrol dan memfilter lalu lintas data masuk maupun keluar dari jaringan perusahaan atau data center. Firewall membantu melindungi server dari akses tidak sah, serangan siber, malware, dan aktivitas mencurigakan dengan menerapkan aturan keamanan tertentu agar infrastruktur jaringan tetap aman dan stabil.')">
           <span class="label-dot" style="background:#f87171;box-shadow:0 0 6px rgba(248,113,113,0.5)"></span>
           <span class="label-line"></span>
           <span>🔐 Keamanan jaringan</span>
         </div>
-        <div class="rack-label-item" onclick="sendPrompt('Apa bedanya Core Switch dan Access Switch?')">
+        <div class="rack-label-item" onclick="sendPrompt('Perbedaan Core Switch dan Access Switch terletak pada fungsi dan posisinya dalam jaringan. Core Switch digunakan sebagai pusat utama distribusi traffic jaringan dengan performa tinggi untuk menghubungkan backbone jaringan, sedangkan Access Switch digunakan untuk menghubungkan perangkat pengguna seperti komputer, printer, access point, atau IP phone ke jaringan utama. Core Switch fokus pada kapasitas dan kecepatan besar, sementara Access Switch fokus pada koneksi perangkat endpoint.')">
           <span class="label-dot" style="background:#38bdf8;box-shadow:0 0 6px rgba(56,189,248,0.5)"></span>
           <span class="label-line"></span>
           <span>🌐 Jaringan internal</span>
         </div>
-        <div class="rack-label-item" onclick="sendPrompt('Jelaskan fungsi Router dalam rak server')">
+        <div class="rack-label-item" onclick="sendPrompt('Router dalam rak server berfungsi untuk menghubungkan jaringan yang berbeda serta mengatur jalur lalu lintas data antar jaringan maupun internet. Router menentukan rute terbaik untuk pengiriman data, menghubungkan jaringan internal dengan internet, serta membantu pengelolaan komunikasi antar cabang, VLAN, atau infrastruktur jaringan lainnya.')">
           <span class="label-dot" style="background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,0.5)"></span>
           <span class="label-line"></span>
           <span>📡 Routing ke internet</span>
         </div>
-        <div class="rack-label-item" onclick="sendPrompt('Jelaskan fungsi Patch Panel dalam rak server')">
+        <div class="rack-label-item" onclick="sendPrompt('Patch Panel dalam rak server berfungsi sebagai pusat terminasi dan pengelolaan kabel jaringan agar koneksi antar perangkat menjadi lebih rapi, terstruktur, dan mudah dikelola. Patch Panel membantu teknisi melakukan troubleshooting, pemindahan koneksi, dan maintenance jaringan tanpa harus langsung mengubah kabel utama pada perangkat aktif.')">
           <span class="label-dot" style="background:#64748b"></span>
           <span class="label-line"></span>
           <span>🔌 Manajemen kabel</span>
         </div>
-        <div class="rack-label-item" onclick="sendPrompt('Jelaskan fungsi server 1U dan 2U dalam data center')">
+        <div class="rack-label-item" onclick="sendPrompt('Server 1U dan 2U dalam data center adalah jenis server rackmount berdasarkan ukuran tinggi rack unit. Server 1U memiliki ukuran lebih kecil dan hemat ruang sehingga cocok untuk kebutuhan server dalam jumlah banyak, sedangkan server 2U memiliki ruang lebih besar untuk tambahan storage, pendingin, atau komponen performa tinggi. Pemilihan ukuran server biasanya disesuaikan dengan kebutuhan kapasitas, performa, dan efisiensi ruang di data center.')">
           <span class="label-dot" style="background:#a78bfa;box-shadow:0 0 6px rgba(167,139,250,0.5)"></span>
           <span class="label-line"></span>
           <span>🖥️ Server komputasi</span>
         </div>
-        <div class="rack-label-item" onclick="sendPrompt('Apa fungsi KVM Switch di data center?')">
+        <div class="rack-label-item" onclick="sendPrompt('KVM Switch (Keyboard, Video, Mouse Switch) di data center berfungsi untuk mengontrol banyak server menggunakan satu keyboard, monitor, dan mouse saja. Dengan KVM Switch, administrator dapat berpindah antar server dengan mudah tanpa harus menggunakan perangkat input terpisah untuk setiap server sehingga pengelolaan server menjadi lebih praktis dan efisien.')">
           <span class="label-dot" style="background:#f59e0b;box-shadow:0 0 6px rgba(245,158,11,0.5)"></span>
           <span class="label-line"></span>
           <span>🕹️ Remote manajemen</span>
         </div>
-        <div class="rack-label-item" onclick="sendPrompt('Jelaskan perbedaan NAS dan SAN dalam infrastruktur server')">
+        <div class="rack-label-item" onclick="sendPrompt('NAS (Network Attached Storage) adalah sistem penyimpanan berbasis jaringan yang digunakan untuk berbagi file antar pengguna dengan pengelolaan sederhana dan biaya lebih terjangkau. Sedangkan SAN (Storage Area Network) adalah jaringan penyimpanan khusus berkecepatan tinggi yang menghubungkan server dengan storage secara langsung untuk kebutuhan performa besar, latency rendah, dan kapasitas enterprise. NAS lebih fokus pada file sharing, sementara SAN fokus pada performa storage tingkat tinggi untuk server dan data center.')">
           <span class="label-dot" style="background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,0.5)"></span>
           <span class="label-line"></span>
           <span>💾 Penyimpanan data</span>
         </div>
-        <div class="rack-label-item" onclick="sendPrompt('Mengapa UPS sangat penting di rak server?')">
+        <div class="rack-label-item" onclick="sendPrompt('UPS (Uninterruptible Power Supply) sangat penting di rak server karena berfungsi menyediakan daya cadangan sementara ketika listrik utama mati atau tidak stabil. UPS membantu menjaga server tetap menyala, melindungi perangkat dari kerusakan akibat listrik padam mendadak, lonjakan tegangan, serta memberikan waktu bagi administrator untuk melakukan shutdown sistem secara aman.')">
           <span class="label-dot" style="background:#ef4444;box-shadow:0 0 6px rgba(239,68,68,0.5)"></span>
           <span class="label-line"></span>
           <span>⚡ Backup listrik</span>
         </div>
-        <div class="rack-label-item" onclick="sendPrompt('Apa fungsi PDU Power Distribution Unit di rak server?')">
+        <div class="rack-label-item" onclick="sendPrompt('PDU (Power Distribution Unit) di rak server berfungsi untuk mendistribusikan daya listrik ke seluruh perangkat dalam rack seperti server, switch, storage, dan perangkat jaringan lainnya. PDU membantu pengelolaan sumber daya listrik menjadi lebih terorganisir, aman, serta mempermudah monitoring penggunaan daya pada infrastruktur data center atau server room.')">
           <span class="label-dot" style="background:#94a3b8"></span>
           <span class="label-line"></span>
           <span>🔋 Distribusi daya</span>
@@ -1394,25 +1391,25 @@ body::before {
         <!-- FANS -->
         <div class="int-section-title">🌀 System Fans</div>
         <div class="fans-row" style="margin-bottom:14px">
-          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
-          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
-          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
-          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
-          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
-          <div class="server-fan" onclick="sendPrompt('Kenapa fan di server lebih banyak dan lebih kencang dari PC biasa?')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Fan pada server biasanya lebih banyak dan berputar lebih kencang dibanding PC biasa karena server bekerja terus-menerus selama 24 jam dan menangani beban kerja yang jauh lebih berat. Komponen server seperti CPU, RAM, storage, dan power supply menghasilkan panas tinggi sehingga membutuhkan sistem pendinginan yang lebih kuat agar suhu tetap stabil dan performa server tidak menurun.')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Fan pada server biasanya lebih banyak dan berputar lebih kencang dibanding PC biasa karena server bekerja terus-menerus selama 24 jam dan menangani beban kerja yang jauh lebih berat. Komponen server seperti CPU, RAM, storage, dan power supply menghasilkan panas tinggi sehingga membutuhkan sistem pendinginan yang lebih kuat agar suhu tetap stabil dan performa server tidak menurun.')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Fan pada server biasanya lebih banyak dan berputar lebih kencang dibanding PC biasa karena server bekerja terus-menerus selama 24 jam dan menangani beban kerja yang jauh lebih berat. Komponen server seperti CPU, RAM, storage, dan power supply menghasilkan panas tinggi sehingga membutuhkan sistem pendinginan yang lebih kuat agar suhu tetap stabil dan performa server tidak menurun.')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Fan pada server biasanya lebih banyak dan berputar lebih kencang dibanding PC biasa karena server bekerja terus-menerus selama 24 jam dan menangani beban kerja yang jauh lebih berat. Komponen server seperti CPU, RAM, storage, dan power supply menghasilkan panas tinggi sehingga membutuhkan sistem pendinginan yang lebih kuat agar suhu tetap stabil dan performa server tidak menurun.')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Fan pada server biasanya lebih banyak dan berputar lebih kencang dibanding PC biasa karena server bekerja terus-menerus selama 24 jam dan menangani beban kerja yang jauh lebih berat. Komponen server seperti CPU, RAM, storage, dan power supply menghasilkan panas tinggi sehingga membutuhkan sistem pendinginan yang lebih kuat agar suhu tetap stabil dan performa server tidak menurun.')">✳️</div>
+          <div class="server-fan" onclick="sendPrompt('Fan pada server biasanya lebih banyak dan berputar lebih kencang dibanding PC biasa karena server bekerja terus-menerus selama 24 jam dan menangani beban kerja yang jauh lebih berat. Komponen server seperti CPU, RAM, storage, dan power supply menghasilkan panas tinggi sehingga membutuhkan sistem pendinginan yang lebih kuat agar suhu tetap stabil dan performa server tidak menurun.')">✳️</div>
         </div>
 
         <!-- CPU -->
         <div class="int-section-title">🧠 CPU Sockets — Dual Socket</div>
         <div class="cpu-grid">
-          <div class="cpu-socket" onclick="sendPrompt('Apa bedanya CPU server Intel Xeon dengan CPU biasa Intel Core i7?')">
+          <div class="cpu-socket" onclick="sendPrompt('Perbedaan CPU server seperti Intel Xeon dan CPU biasa seperti Intel Core i7 terletak pada fokus penggunaannya. Intel Xeon dirancang untuk kebutuhan server dan data center dengan dukungan stabilitas tinggi, penggunaan multi-core besar, ECC RAM, dual CPU socket, serta kemampuan bekerja nonstop dalam jangka panjang. Sedangkan Intel Core i7 lebih ditujukan untuk penggunaan desktop, gaming, dan kebutuhan personal dengan fokus pada performa pengguna harian.')">
             <div class="heatsink"></div>
             <div class="cpu-chip"><div class="cpu-chip-text">XEON</div></div>
             <div class="cpu-name">CPU Socket 1</div>
             <div class="cpu-spec">Intel Xeon · 16 Core</div>
             <div class="cpu-temp">🌡️ 68°C · Active</div>
           </div>
-          <div class="cpu-socket" onclick="sendPrompt('Kenapa server enterprise pakai dual CPU socket?')">
+          <div class="cpu-socket" onclick="sendPrompt('Server enterprise menggunakan dual CPU socket agar satu server dapat menjalankan dua processor sekaligus untuk meningkatkan jumlah core, performa multitasking, virtualisasi, dan kemampuan menangani banyak pengguna atau layanan secara bersamaan. Sistem ini umum digunakan pada data center, virtualization server, database server, dan cloud infrastructure dengan kebutuhan resource besar.')">
             <div class="heatsink"></div>
             <div class="cpu-chip"><div class="cpu-chip-text">XEON</div></div>
             <div class="cpu-name">CPU Socket 2</div>
@@ -1424,23 +1421,23 @@ body::before {
         <!-- RAM -->
         <div class="int-section-title">💾 RAM Slots — DDR4 ECC DIMM</div>
         <div class="ram-row" style="margin-bottom:4px">
-          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
-          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
-          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
-          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
-          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
-          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
-          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
-          <div class="ram-stick filled" onclick="sendPrompt('Apa itu ECC RAM dan kenapa server harus pakai ECC?')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
-          <div class="ram-stick empty" onclick="sendPrompt('Apa yang terjadi kalau slot RAM server dikosongkan?')"><div class="ram-empty-label">empty</div></div>
-          <div class="ram-stick empty" onclick="sendPrompt('Apa yang terjadi kalau slot RAM server dikosongkan?')"><div class="ram-empty-label">empty</div></div>
-          <div class="ram-stick empty" onclick="sendPrompt('Apa yang terjadi kalau slot RAM server dikosongkan?')"><div class="ram-empty-label">empty</div></div>
-          <div class="ram-stick empty" onclick="sendPrompt('Apa yang terjadi kalau slot RAM server dikosongkan?')"><div class="ram-empty-label">empty</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('ECC RAM (Error Correcting Code RAM) adalah jenis RAM yang mampu mendeteksi dan memperbaiki error data secara otomatis saat proses pembacaan atau penulisan data. Server membutuhkan ECC RAM karena kestabilan dan keakuratan data sangat penting dalam lingkungan enterprise agar mengurangi risiko crash, corrupt data, atau kesalahan sistem yang dapat memengaruhi layanan server.')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('ECC RAM (Error Correcting Code RAM) adalah jenis RAM yang mampu mendeteksi dan memperbaiki error data secara otomatis saat proses pembacaan atau penulisan data. Server membutuhkan ECC RAM karena kestabilan dan keakuratan data sangat penting dalam lingkungan enterprise agar mengurangi risiko crash, corrupt data, atau kesalahan sistem yang dapat memengaruhi layanan server.')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('ECC RAM (Error Correcting Code RAM) adalah jenis RAM yang mampu mendeteksi dan memperbaiki error data secara otomatis saat proses pembacaan atau penulisan data. Server membutuhkan ECC RAM karena kestabilan dan keakuratan data sangat penting dalam lingkungan enterprise agar mengurangi risiko crash, corrupt data, atau kesalahan sistem yang dapat memengaruhi layanan server.')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('ECC RAM (Error Correcting Code RAM) adalah jenis RAM yang mampu mendeteksi dan memperbaiki error data secara otomatis saat proses pembacaan atau penulisan data. Server membutuhkan ECC RAM karena kestabilan dan keakuratan data sangat penting dalam lingkungan enterprise agar mengurangi risiko crash, corrupt data, atau kesalahan sistem yang dapat memengaruhi layanan server.')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('ECC RAM (Error Correcting Code RAM) adalah jenis RAM yang mampu mendeteksi dan memperbaiki error data secara otomatis saat proses pembacaan atau penulisan data. Server membutuhkan ECC RAM karena kestabilan dan keakuratan data sangat penting dalam lingkungan enterprise agar mengurangi risiko crash, corrupt data, atau kesalahan sistem yang dapat memengaruhi layanan server.')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('ECC RAM (Error Correcting Code RAM) adalah jenis RAM yang mampu mendeteksi dan memperbaiki error data secara otomatis saat proses pembacaan atau penulisan data. Server membutuhkan ECC RAM karena kestabilan dan keakuratan data sangat penting dalam lingkungan enterprise agar mengurangi risiko crash, corrupt data, atau kesalahan sistem yang dapat memengaruhi layanan server.')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('ECC RAM (Error Correcting Code RAM) adalah jenis RAM yang mampu mendeteksi dan memperbaiki error data secara otomatis saat proses pembacaan atau penulisan data. Server membutuhkan ECC RAM karena kestabilan dan keakuratan data sangat penting dalam lingkungan enterprise agar mengurangi risiko crash, corrupt data, atau kesalahan sistem yang dapat memengaruhi layanan server.')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick filled" onclick="sendPrompt('ECC RAM (Error Correcting Code RAM) adalah jenis RAM yang mampu mendeteksi dan memperbaiki error data secara otomatis saat proses pembacaan atau penulisan data. Server membutuhkan ECC RAM karena kestabilan dan keakuratan data sangat penting dalam lingkungan enterprise agar mengurangi risiko crash, corrupt data, atau kesalahan sistem yang dapat memengaruhi layanan server.')"><div class="ram-chip"></div><div class="ram-chip-alt"></div><div class="ram-chip"></div><div class="ram-label">16GB</div></div>
+          <div class="ram-stick empty" onclick="sendPrompt('Jika slot RAM server dikosongkan secara tidak sesuai konfigurasi motherboard, performa server bisa menurun karena mode multi-channel memory tidak berjalan optimal. Pada beberapa server enterprise, konfigurasi slot RAM juga harus mengikuti aturan tertentu agar server dapat booting dan bekerja secara stabil sesuai arsitektur CPU dan memory controller.')"><div class="ram-empty-label">empty</div></div>
+          <div class="ram-stick empty" onclick="sendPrompt('Jika slot RAM server dikosongkan secara tidak sesuai konfigurasi motherboard, performa server bisa menurun karena mode multi-channel memory tidak berjalan optimal. Pada beberapa server enterprise, konfigurasi slot RAM juga harus mengikuti aturan tertentu agar server dapat booting dan bekerja secara stabil sesuai arsitektur CPU dan memory controller.')"><div class="ram-empty-label">empty</div></div>
+          <div class="ram-stick empty" onclick="sendPrompt('Jika slot RAM server dikosongkan secara tidak sesuai konfigurasi motherboard, performa server bisa menurun karena mode multi-channel memory tidak berjalan optimal. Pada beberapa server enterprise, konfigurasi slot RAM juga harus mengikuti aturan tertentu agar server dapat booting dan bekerja secara stabil sesuai arsitektur CPU dan memory controller.')"><div class="ram-empty-label">empty</div></div>
+          <div class="ram-stick empty" onclick="sendPrompt('Jika slot RAM server dikosongkan secara tidak sesuai konfigurasi motherboard, performa server bisa menurun karena mode multi-channel memory tidak berjalan optimal. Pada beberapa server enterprise, konfigurasi slot RAM juga harus mengikuti aturan tertentu agar server dapat booting dan bekerja secara stabil sesuai arsitektur CPU dan memory controller.')"><div class="ram-empty-label">empty</div></div>
         </div>
         <div style="font-size:9px;color:#5ba3f5;margin-bottom:14px">8 slot terisi · 128GB total · 4 slot kosong (expandable)</div>
 
         <!-- RAID -->
-        <div class="raid-bar" onclick="sendPrompt('Jelaskan apa itu RAID Controller dan perbedaan RAID 0, 1, 5, 10 untuk server')">
+        <div class="raid-bar" onclick="sendPrompt('RAID Controller adalah perangkat atau sistem yang digunakan untuk mengatur beberapa storage menjadi satu kesatuan untuk meningkatkan performa, kapasitas, maupun keamanan data. RAID 0 fokus pada performa dengan membagi data ke beberapa disk tanpa backup, RAID 1 membuat salinan data secara mirror untuk keamanan, RAID 5 menggabungkan performa dan redundansi menggunakan parity, sedangkan RAID 10 mengombinasikan RAID 1 dan RAID 0 untuk performa tinggi sekaligus keamanan data yang lebih baik.')">
           <div>
             <div class="raid-name">⚡ RAID Controller Card</div>
             <div class="raid-spec">Dell PERC H730 / HP Smart Array — mengatur redundansi storage</div>
@@ -1451,21 +1448,21 @@ body::before {
         <!-- HDD Bays -->
         <div class="int-section-title">🗄️ Drive Bays — Hot Swappable</div>
         <div class="hdd-row">
-          <div class="hdd-bay sas" onclick="sendPrompt('Apa bedanya SAS drive dan SATA drive untuk server?')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
-          <div class="hdd-bay sas" onclick="sendPrompt('Apa bedanya SAS drive dan SATA drive untuk server?')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
-          <div class="hdd-bay sas" onclick="sendPrompt('Apa bedanya SAS drive dan SATA drive untuk server?')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
-          <div class="hdd-bay sas" onclick="sendPrompt('Apa bedanya SAS drive dan SATA drive untuk server?')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
-          <div class="hdd-bay ssd" onclick="sendPrompt('Kapan sebaiknya server pakai SSD NVMe dibanding HDD SAS?')"><div class="hdd-icon">⚡</div><div class="hdd-type">SSD</div><div class="hdd-size">960GB</div><div class="hdd-led on"></div></div>
-          <div class="hdd-bay ssd" onclick="sendPrompt('Kapan sebaiknya server pakai SSD NVMe dibanding HDD SAS?')"><div class="hdd-icon">⚡</div><div class="hdd-type">SSD</div><div class="hdd-size">960GB</div><div class="hdd-led on"></div></div>
-          <div class="hdd-bay empty-bay" onclick="sendPrompt('Apa itu Hot Swappable drive di server?')"><div class="hdd-icon">➕</div><div class="hdd-type">empty</div><div class="hdd-size">—</div><div class="hdd-led off"></div></div>
-          <div class="hdd-bay empty-bay" onclick="sendPrompt('Apa itu Hot Swappable drive di server?')"><div class="hdd-icon">➕</div><div class="hdd-type">empty</div><div class="hdd-size">—</div><div class="hdd-led off"></div></div>
+          <div class="hdd-bay sas" onclick="sendPrompt('Perbedaan SAS Drive dan SATA Drive untuk server terletak pada performa, keandalan, dan penggunaan. SAS (Serial Attached SCSI) memiliki kecepatan transfer lebih tinggi, durability lebih baik, latency lebih rendah, serta dirancang untuk workload enterprise dan operasional 24/7. Sedangkan SATA lebih murah dan umum digunakan untuk storage kapasitas besar dengan kebutuhan performa yang tidak terlalu tinggi.')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay sas" onclick="sendPrompt('Perbedaan SAS Drive dan SATA Drive untuk server terletak pada performa, keandalan, dan penggunaan. SAS (Serial Attached SCSI) memiliki kecepatan transfer lebih tinggi, durability lebih baik, latency lebih rendah, serta dirancang untuk workload enterprise dan operasional 24/7. Sedangkan SATA lebih murah dan umum digunakan untuk storage kapasitas besar dengan kebutuhan performa yang tidak terlalu tinggi.')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay sas" onclick="sendPrompt('Perbedaan SAS Drive dan SATA Drive untuk server terletak pada performa, keandalan, dan penggunaan. SAS (Serial Attached SCSI) memiliki kecepatan transfer lebih tinggi, durability lebih baik, latency lebih rendah, serta dirancang untuk workload enterprise dan operasional 24/7. Sedangkan SATA lebih murah dan umum digunakan untuk storage kapasitas besar dengan kebutuhan performa yang tidak terlalu tinggi.')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay sas" onclick="sendPrompt('Perbedaan SAS Drive dan SATA Drive untuk server terletak pada performa, keandalan, dan penggunaan. SAS (Serial Attached SCSI) memiliki kecepatan transfer lebih tinggi, durability lebih baik, latency lebih rendah, serta dirancang untuk workload enterprise dan operasional 24/7. Sedangkan SATA lebih murah dan umum digunakan untuk storage kapasitas besar dengan kebutuhan performa yang tidak terlalu tinggi.')"><div class="hdd-icon">💿</div><div class="hdd-type">SAS</div><div class="hdd-size">2 TB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay ssd" onclick="sendPrompt('Server sebaiknya menggunakan SSD NVMe dibanding HDD SAS ketika membutuhkan performa tinggi seperti virtualisasi, database, cloud server, AI processing, atau aplikasi dengan akses data sangat cepat. NVMe memiliki kecepatan baca tulis dan latency jauh lebih baik dibanding HDD SAS sehingga mempercepat proses sistem dan aplikasi server modern.')"><div class="hdd-icon">⚡</div><div class="hdd-type">SSD</div><div class="hdd-size">960GB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay ssd" onclick="sendPrompt('Server sebaiknya menggunakan SSD NVMe dibanding HDD SAS ketika membutuhkan performa tinggi seperti virtualisasi, database, cloud server, AI processing, atau aplikasi dengan akses data sangat cepat. NVMe memiliki kecepatan baca tulis dan latency jauh lebih baik dibanding HDD SAS sehingga mempercepat proses sistem dan aplikasi server modern.')"><div class="hdd-icon">⚡</div><div class="hdd-type">SSD</div><div class="hdd-size">960GB</div><div class="hdd-led on"></div></div>
+          <div class="hdd-bay empty-bay" onclick="sendPrompt('Hot Swappable Drive adalah fitur pada server yang memungkinkan hard disk atau SSD dilepas dan diganti tanpa harus mematikan server. Fitur ini sangat penting pada data center karena membantu maintenance dan penggantian storage tetap berjalan tanpa mengganggu layanan server yang sedang aktif.')"><div class="hdd-icon">➕</div><div class="hdd-type">empty</div><div class="hdd-size">—</div><div class="hdd-led off"></div></div>
+          <div class="hdd-bay empty-bay" onclick="sendPrompt('Hot Swappable Drive adalah fitur pada server yang memungkinkan hard disk atau SSD dilepas dan diganti tanpa harus mematikan server. Fitur ini sangat penting pada data center karena membantu maintenance dan penggantian storage tetap berjalan tanpa mengganggu layanan server yang sedang aktif.')"><div class="hdd-icon">➕</div><div class="hdd-type">empty</div><div class="hdd-size">—</div><div class="hdd-led off"></div></div>
         </div>
         <div style="font-size:9px;color:#4ADE80;margin-bottom:14px">Hot-swappable — bisa ganti drive tanpa matiin server!</div>
 
         <!-- NIC -->
         <div class="int-section-title">🌐 Network Interface Card (NIC)</div>
         <div class="nic-grid">
-          <div class="nic-card" onclick="sendPrompt('Jelaskan fungsi NIC 10GbE di server dan bedanya dengan NIC 1GbE biasa')">
+          <div class="nic-card" onclick="sendPrompt('NIC 10GbE pada server berfungsi untuk menyediakan koneksi jaringan berkecepatan 10 Gigabit per second yang jauh lebih cepat dibanding NIC 1GbE biasa. NIC 10GbE digunakan pada data center, storage network, virtualization, dan cloud infrastructure untuk menangani traffic data besar dengan latency rendah dan transfer data lebih cepat.')">
             <div class="nic-name">NIC — 10GbE</div>
             <div class="nic-spec">Intel X550 · Dual Port</div>
             <div class="nic-ports">
@@ -1473,7 +1470,7 @@ body::before {
               <div class="nic-port idle"></div><div class="nic-port idle"></div>
             </div>
           </div>
-          <div class="nic-card" onclick="sendPrompt('Apa itu iDRAC out-of-band management port di server Dell?')">
+          <div class="nic-card" onclick="sendPrompt('iDRAC (Integrated Dell Remote Access Controller) adalah fitur out-of-band management pada server Dell yang memungkinkan administrator memantau dan mengontrol server dari jarak jauh meskipun sistem operasi server mati atau mengalami error. Dengan iDRAC, administrator dapat melakukan remote console, reboot server, monitoring hardware, hingga instalasi sistem operasi melalui jaringan management khusus.')">
             <div class="nic-name">iDRAC Port</div>
             <div class="nic-spec">Out-of-Band Management</div>
             <div class="nic-ports">
@@ -1485,14 +1482,14 @@ body::before {
         <!-- PSU -->
         <div class="int-section-title">⚡ Power Supply Unit (Redundant)</div>
         <div class="psu-grid">
-          <div class="psu-card" onclick="sendPrompt('Kenapa server enterprise pakai dual PSU redundant?')">
+          <div class="psu-card" onclick="sendPrompt('Server enterprise menggunakan dual PSU redundant agar server tetap menyala jika salah satu power supply mengalami kerusakan atau kehilangan sumber listrik. Sistem redundant ini meningkatkan keandalan dan uptime server sehingga layanan tetap berjalan tanpa downtime meskipun terjadi gangguan pada salah satu PSU.')">
             <div class="psu-header">
               <div class="psu-name">PSU 1 — Primary</div>
               <span class="led led-sm led-g"></span>
             </div>
             <div class="psu-spec">750W · 80 PLUS Platinum · Active</div>
           </div>
-          <div class="psu-card" onclick="sendPrompt('Apa yang terjadi kalau satu PSU server mati tapi ada PSU kedua?')">
+          <div class="psu-card" onclick="sendPrompt('Jika satu PSU server mati tetapi masih ada PSU kedua yang aktif, server biasanya tetap berjalan normal tanpa mati karena beban daya akan otomatis dialihkan ke PSU yang masih berfungsi. Administrator kemudian dapat mengganti PSU yang rusak tanpa harus mematikan server apabila server mendukung fitur hot-swappable PSU.')">
             <div class="psu-header">
               <div class="psu-name">PSU 2 — Standby</div>
               <span class="led led-sm led-a"></span>
@@ -1527,21 +1524,21 @@ body::before {
       <!-- Hardware -->
       <div class="int-title-light" style="margin-top:10px">🔩 Hardware Layer</div>
       <div class="hw-grid-light">
-        <div class="hw-card-light hw-cpu-l" onclick="sendPrompt('Jelaskan peran CPU dalam Hypervisor Server dan bagaimana CPU dibagi ke VM?')">
+        <div class="hw-card-light hw-cpu-l" onclick="sendPrompt('CPU dalam Hypervisor Server berperan sebagai pusat pemrosesan utama yang menjalankan seluruh virtual machine (VM) di dalam server virtualisasi. Hypervisor akan membagi resource CPU fisik menjadi virtual CPU (vCPU) untuk setiap VM sesuai konfigurasi yang ditentukan administrator. Dengan sistem ini, beberapa VM dapat berjalan secara bersamaan dalam satu server fisik sambil berbagi resource processor secara efisien sesuai kebutuhan workload masing-masing.')">
           <div class="hw-icon">🧠</div>
           <div class="hw-name">CPU</div>
           <div class="hw-spec">32 Core · 3.4GHz<br>Intel Xeon</div>
           <div class="hw-bar-wrap"><div class="hw-bar"></div></div>
           <div class="hw-spec" style="margin-top:3px">65% terpakai</div>
         </div>
-        <div class="hw-card-light hw-ram-l" onclick="sendPrompt('Jelaskan peran RAM dalam Hypervisor Server dan bagaimana RAM dibagi ke VM?')">
+        <div class="hw-card-light hw-ram-l" onclick="sendPrompt('RAM dalam Hypervisor Server berfungsi sebagai tempat penyimpanan sementara untuk seluruh proses yang dijalankan VM. Hypervisor akan membagi kapasitas RAM fisik menjadi virtual memory untuk setiap VM agar masing-masing sistem operasi dan aplikasi dapat berjalan secara terpisah. Semakin banyak VM yang aktif, maka kebutuhan RAM server juga semakin besar untuk menjaga performa dan kestabilan virtualisasi.')">
           <div class="hw-icon">💾</div>
           <div class="hw-name">RAM</div>
           <div class="hw-spec">128 GB DDR4<br>ECC Memory</div>
           <div class="hw-bar-wrap"><div class="hw-bar"></div></div>
           <div class="hw-spec" style="margin-top:3px">48% terpakai</div>
         </div>
-        <div class="hw-card-light hw-storage-l" onclick="sendPrompt('Jelaskan peran Storage HDD dan SSD dalam Hypervisor Server?')">
+        <div class="hw-card-light hw-storage-l" onclick="sendPrompt('Storage HDD dan SSD dalam Hypervisor Server digunakan untuk menyimpan file virtual machine, sistem operasi, aplikasi, dan data virtualisasi. HDD biasanya digunakan untuk kapasitas besar dan penyimpanan data umum, sedangkan SSD terutama NVMe digunakan untuk performa tinggi karena memiliki kecepatan baca tulis lebih cepat sehingga proses booting VM, database, dan aplikasi menjadi lebih responsif.')">
           <div class="hw-icon">🗄️</div>
           <div class="hw-name">Storage</div>
           <div class="hw-spec">10 TB SSD NVMe<br>RAID 10</div>
@@ -1552,7 +1549,7 @@ body::before {
 
       <!-- Hypervisor bar -->
       <div class="int-title-light">🖥️ Hypervisor Layer</div>
-      <div class="hypervisor-bar" onclick="sendPrompt('Jelaskan perbedaan Proxmox, VMware ESXi, dan Hyper-V sebagai hypervisor')">
+      <div class="hypervisor-bar" onclick="sendPrompt('Proxmox, VMware ESXi, dan Hyper-V merupakan platform hypervisor yang digunakan untuk virtualisasi server, namun memiliki perbedaan dalam fitur dan penggunaan. Proxmox adalah hypervisor open-source berbasis Linux yang mendukung virtual machine dan container dengan fleksibilitas tinggi. VMware ESXi dikenal sangat stabil dan banyak digunakan di enterprise karena performa serta fitur virtualisasi yang lengkap. Sedangkan Hyper-V dari Microsoft terintegrasi dengan Windows Server dan cocok digunakan pada lingkungan berbasis teknologi Microsoft.')">
         <div class="hyp-left">
           <div class="hyp-icon-large">⚡</div>
           <div>
@@ -1573,32 +1570,32 @@ body::before {
       <!-- VM Grid -->
       <div class="int-title-light">💻 Virtual Machines</div>
       <div class="vm-grid">
-        <div class="vm-card vm-blue" onclick="sendPrompt('Jelaskan fungsi VM untuk praktikum Network di lab komputer')">
+        <div class="vm-card vm-blue" onclick="sendPrompt('VM untuk praktikum network di lab komputer digunakan untuk membuat simulasi jaringan tanpa memerlukan banyak perangkat fisik. Dengan VM, mahasiswa dapat melakukan konfigurasi router, switch, firewall, DNS, DHCP, hingga simulasi topologi jaringan secara virtual sehingga pembelajaran menjadi lebih fleksibel dan efisien.')">
           <div class="vm-header"><div><div class="vm-id">VM-01</div><div class="vm-os">🐧 Ubuntu Server</div></div><div class="vm-status">● Running</div></div>
           <div class="vm-role" style="color:#3B82F6">Network Lab PC-01</div>
           <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">4c</div><div class="vm-r-val">8GB</div><div class="vm-r-val">200G</div></div>
         </div>
-        <div class="vm-card vm-green" onclick="sendPrompt('Jelaskan fungsi VM untuk praktikum Database di lab komputer')">
+        <div class="vm-card vm-green" onclick="sendPrompt('VM untuk praktikum database di lab komputer digunakan untuk menjalankan sistem database seperti MySQL, PostgreSQL, atau SQL Server dalam lingkungan virtual terpisah. Mahasiswa dapat belajar instalasi, konfigurasi, query database, backup, dan pengelolaan data tanpa mengganggu sistem utama komputer lab.')">
           <div class="vm-header"><div><div class="vm-id">VM-02</div><div class="vm-os">🪟 Windows 10</div></div><div class="vm-status">● Running</div></div>
           <div class="vm-role" style="color:#16A34A">Database Lab PC-02</div>
           <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">4c</div><div class="vm-r-val">8GB</div><div class="vm-r-val">200G</div></div>
         </div>
-        <div class="vm-card vm-purple" onclick="sendPrompt('Jelaskan fungsi VM untuk Active Directory dan Authentication Server')">
+        <div class="vm-card vm-purple" onclick="sendPrompt('VM untuk Active Directory dan Authentication Server digunakan sebagai simulasi lingkungan jaringan perusahaan berbasis domain. Dalam VM ini mahasiswa dapat mempelajari manajemen user, login domain, group policy, authentication server, serta pengelolaan hak akses jaringan seperti yang digunakan pada infrastruktur enterprise.')">
           <div class="vm-header"><div><div class="vm-id">VM-03</div><div class="vm-os">🪟 Windows Server</div></div><div class="vm-status">● Running</div></div>
           <div class="vm-role" style="color:#9333EA">Active Directory</div>
           <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">4c</div><div class="vm-r-val">16GB</div><div class="vm-r-val">500G</div></div>
         </div>
-        <div class="vm-card vm-amber" onclick="sendPrompt('Jelaskan fungsi VM untuk Web Server dan Application Server di lab')">
+        <div class="vm-card vm-amber" onclick="sendPrompt('VM untuk Web Server dan Application Server di lab digunakan untuk menjalankan layanan website dan aplikasi backend secara virtual. Praktikum ini membantu mahasiswa mempelajari hosting web, konfigurasi Apache atau Nginx, deployment aplikasi, API, serta komunikasi antara web server, database, dan application server.')">
           <div class="vm-header"><div><div class="vm-id">VM-04</div><div class="vm-os">🐧 Debian</div></div><div class="vm-status">● Running</div></div>
           <div class="vm-role" style="color:#D97706">Web &amp; App Server</div>
           <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">2c</div><div class="vm-r-val">4GB</div><div class="vm-r-val">100G</div></div>
         </div>
-        <div class="vm-card vm-coral" onclick="sendPrompt('Jelaskan fungsi VM untuk Backup Server di infrastruktur lab')">
+        <div class="vm-card vm-coral" onclick="sendPrompt('VM untuk Backup Server di infrastruktur lab digunakan untuk mensimulasikan sistem pencadangan data server utama agar mahasiswa memahami konsep backup, recovery, redundansi data, dan perlindungan sistem apabila terjadi kerusakan atau kehilangan data.')">
           <div class="vm-header"><div><div class="vm-id">VM-05</div><div class="vm-os">🐧 Ubuntu</div></div><div class="vm-status">● Running</div></div>
           <div class="vm-role" style="color:#E11D48">Backup Server</div>
           <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">2c</div><div class="vm-r-val">4GB</div><div class="vm-r-val">2TB</div></div>
         </div>
-        <div class="vm-card vm-gray" onclick="sendPrompt('Apa itu VM snapshot dan kenapa penting untuk lab komputer?')">
+        <div class="vm-card vm-gray" onclick="sendPrompt('VM Snapshot adalah fitur yang digunakan untuk menyimpan kondisi virtual machine pada waktu tertentu sehingga VM dapat dikembalikan ke kondisi sebelumnya jika terjadi error, kerusakan sistem, atau kesalahan konfigurasi. Snapshot sangat penting di lab komputer karena mempermudah proses praktikum dan recovery tanpa perlu instalasi ulang sistem operasi.')">
           <div class="vm-header"><div><div class="vm-id">VM-06</div><div class="vm-os">⏸️ Stopped</div></div><div class="vm-status" style="background:#F3F4F6;color:#6B7280">● Idle</div></div>
           <div class="vm-role" style="color:#6B7280">Cadangan / Snapshot</div>
           <div class="vm-res"><div class="vm-r-label">CPU</div><div class="vm-r-label">RAM</div><div class="vm-r-label">HDD</div><div class="vm-r-val">—</div><div class="vm-r-val">—</div><div class="vm-r-val">500G</div></div>
@@ -1607,7 +1604,7 @@ body::before {
 
       <!-- Network bar -->
       <div class="int-title-light">🌐 Network Layer</div>
-      <div class="network-bar" onclick="sendPrompt('Bagaimana VM terhubung ke jaringan melalui virtual switch di hypervisor?')">
+      <div class="network-bar" onclick="sendPrompt('VM terhubung ke jaringan melalui Virtual Switch di hypervisor yang berfungsi seperti switch jaringan virtual. Virtual switch menghubungkan VM dengan VM lain, jaringan lokal, maupun internet sehingga setiap VM dapat berkomunikasi layaknya perangkat fisik dalam sebuah jaringan komputer.')">
         <div class="hyp-left">
           <div style="font-size:22px">🔌</div>
           <div>
@@ -1625,17 +1622,17 @@ body::before {
 
     <!-- Resource Summary -->
     <div class="res-summary">
-      <div class="res-card res-cpu" onclick="sendPrompt('Apa yang terjadi kalau CPU server hypervisor overload?')">
+      <div class="res-card res-cpu" onclick="sendPrompt('Jika CPU Server Hypervisor overload, performa seluruh VM dapat menurun karena processor tidak mampu menangani semua proses virtualisasi secara optimal. Dampaknya bisa berupa lag, latency tinggi, VM lambat, bahkan crash pada layanan tertentu akibat kekurangan resource CPU.')">
         <div class="res-label">🧠 CPU Usage</div>
         <div class="res-bar-wrap"><div class="res-bar"></div></div>
         <div class="res-text">20 / 32 core · 65%</div>
       </div>
-      <div class="res-card res-ram" onclick="sendPrompt('Apa yang terjadi kalau RAM server hypervisor habis?')">
+      <div class="res-card res-ram" onclick="sendPrompt('Jika RAM Server Hypervisor habis, VM dapat mengalami penurunan performa drastis karena sistem mulai menggunakan swap memory atau storage sebagai pengganti RAM yang jauh lebih lambat. Kondisi ini dapat menyebabkan VM freeze, gagal booting, atau layanan server menjadi tidak stabil.')">
         <div class="res-label">💾 RAM Usage</div>
         <div class="res-bar-wrap"><div class="res-bar"></div></div>
         <div class="res-text">62 / 128 GB · 48%</div>
       </div>
-      <div class="res-card res-storage" onclick="sendPrompt('Apa itu RAID dan kenapa penting untuk storage server?')">
+      <div class="res-card res-storage" onclick="sendPrompt('RAID (Redundant Array of Independent Disks) adalah teknologi yang menggabungkan beberapa storage menjadi satu sistem untuk meningkatkan performa, kapasitas, dan keamanan data. RAID penting untuk storage server karena membantu melindungi data dari kerusakan hard disk, meningkatkan kecepatan akses data, serta menjaga ketersediaan layanan server apabila salah satu storage mengalami kegagalan.')">
         <div class="res-label">🗄️ Storage RAID</div>
         <div class="res-bar-wrap"><div class="res-bar"></div></div>
         <div class="res-text">7.2 / 10 TB · 72%</div>
@@ -1669,12 +1666,118 @@ body::before {
     }, 2400 + i * 80);
   });
 
-  // sendPrompt fallback for standalone HTML
+  // ── MODAL SOAL & PENJELASAN ──
+  document.body.insertAdjacentHTML('beforeend', `
+    <div id="sp-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(2,8,22,0.78);backdrop-filter:blur(6px);" onclick="closeSP()"></div>
+    <div id="sp-modal" style="display:none;position:fixed;z-index:9999;top:50%;left:50%;transform:translate(-50%,-48%) scale(0.95);width:min(600px,92vw);background:linear-gradient(145deg,#0d1b2e,#060d1a);border:1px solid rgba(56,189,248,0.3);border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,0.75),0 0 40px rgba(56,189,248,0.05);overflow:hidden;opacity:0;transition:transform .28s cubic-bezier(.34,1.56,.64,1),opacity .2s ease;">
+
+      <!-- Glow bar atas -->
+      <div style="height:3px;background:linear-gradient(90deg,transparent,#38bdf8,#a78bfa,transparent);"></div>
+
+      <!-- HEADER — SOAL -->
+      <div style="padding:18px 22px 16px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(56,189,248,0.04);">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+          <div style="display:flex;align-items:flex-start;gap:12px;flex:1;">
+            <div style="width:36px;height:36px;flex-shrink:0;border-radius:10px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);display:flex;align-items:center;justify-content:center;font-size:17px;margin-top:1px;">&#10067;</div>
+            <div style="flex:1;">
+              <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#38bdf8;letter-spacing:3px;margin-bottom:6px;">SOAL</div>
+              <div id="sp-soal" style="font-family:'Exo 2',sans-serif;font-size:14px;font-weight:600;color:#e2eaf6;line-height:1.5;"></div>
+            </div>
+          </div>
+          <button onclick="closeSP()" style="flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#64748b;cursor:pointer;width:32px;height:32px;border-radius:8px;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .15s;"
+            onmouseover="this.style.background='rgba(248,113,113,0.15)';this.style.borderColor='rgba(248,113,113,0.3)';this.style.color='#f87171'"
+            onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='#64748b'">&#10005;</button>
+        </div>
+      </div>
+
+      <!-- BODY — PENJELASAN -->
+      <div id="sp-body" style="padding:18px 22px 20px;max-height:55vh;overflow-y:auto;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;">&#128161;</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#a78bfa;letter-spacing:3px;">PENJELASAN</div>
+        </div>
+        <p id="sp-text" style="font-family:'Exo 2',sans-serif;font-size:13.5px;line-height:1.9;color:#c8ddf0;word-break:break-word;padding-left:4px;"></p>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="padding:10px 22px;border-top:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.18);">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#1e3a5a;letter-spacing:2px;">LEPKOM &#183; Universitas Gunadarma</div>
+        <button onclick="closeSP()" style="font-family:'Exo 2',sans-serif;font-size:11px;font-weight:600;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;cursor:pointer;padding:6px 18px;border-radius:8px;transition:all .15s;"
+          onmouseover="this.style.background='rgba(56,189,248,0.2)'"
+          onmouseout="this.style.background='rgba(56,189,248,0.1)'">Tutup</button>
+      </div>
+    </div>
+    <style>
+      #sp-body::-webkit-scrollbar{width:4px}
+      #sp-body::-webkit-scrollbar-track{background:transparent}
+      #sp-body::-webkit-scrollbar-thumb{background:rgba(167,139,250,0.25);border-radius:2px}
+      #sp-body::-webkit-scrollbar-thumb:hover{background:rgba(167,139,250,0.5)}
+    </style>
+  `);
+
+  // ── Fungsi generate soal otomatis dari penjelasan ──
+  function generateSoal(text) {
+    // Ambil kalimat pertama (sampai titik pertama)
+    var dotIdx = text.indexOf('.');
+    var kalimat = (dotIdx > 0 && dotIdx < 150) ? text.substring(0, dotIdx).trim() : text.substring(0, 100).trim();
+
+    // Pola: "[Nama] adalah ..." → "Apa itu [Nama] dan apa fungsinya?"
+    var m;
+    m = kalimat.match(/^(.+?)\s+adalah\s+/i);
+    if (m) return 'Apa itu ' + m[1].trim() + ' dan apa fungsinya?';
+
+    // Pola: "[Nama] berfungsi ..." → "Apa fungsi dari [Nama]?"
+    m = kalimat.match(/^(.+?)\s+berfungsi\s+/i);
+    if (m) return 'Apa fungsi dari ' + m[1].trim() + '?';
+
+    // Pola: "[Nama] digunakan untuk ..." → "Untuk apa [Nama] digunakan?"
+    m = kalimat.match(/^(.+?)\s+digunakan\s+untuk\s+/i);
+    if (m) return 'Untuk apa ' + m[1].trim() + ' digunakan?';
+
+    // Pola: "Perbedaan X dan Y ..." → "Apa perbedaan X dan Y?"
+    m = kalimat.match(/^Perbedaan\s+(.+)/i);
+    if (m) return 'Apa perbedaan ' + m[1].trim() + '?';
+
+    // Pola: "Jika X ..." → "Apa yang terjadi jika X?"
+    m = kalimat.match(/^Jika\s+(.+)/i);
+    if (m) return 'Apa yang terjadi jika ' + m[1].trim() + '?';
+
+    // Fallback: ambil subjek awal dan buat pertanyaan
+    var kata = kalimat.split(' ').slice(0, 5).join(' ');
+    return 'Jelaskan tentang ' + kata + '!';
+  }
+
   if (typeof sendPrompt === 'undefined') {
     window.sendPrompt = function(text) {
-      alert('Pertanyaan: ' + text);
+      var overlay = document.getElementById('sp-overlay');
+      var modal   = document.getElementById('sp-modal');
+      var txtEl   = document.getElementById('sp-text');
+      var soalEl  = document.getElementById('sp-soal');
+      var body    = document.getElementById('sp-body');
+
+      soalEl.textContent = generateSoal(text);
+      txtEl.textContent  = text;
+      body.scrollTop = 0;
+
+      overlay.style.display = 'block';
+      modal.style.display   = 'block';
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){
+        modal.style.opacity   = '1';
+        modal.style.transform = 'translate(-50%,-50%) scale(1)';
+      }); });
     };
   }
+
+  function closeSP() {
+    var overlay = document.getElementById('sp-overlay');
+    var modal   = document.getElementById('sp-modal');
+    if (!modal) return;
+    modal.style.opacity   = '0';
+    modal.style.transform = 'translate(-50%,-48%) scale(0.95)';
+    setTimeout(function(){ overlay.style.display = 'none'; modal.style.display = 'none'; }, 240);
+  }
+
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeSP(); });
 </script>
 </body>
 </html>
